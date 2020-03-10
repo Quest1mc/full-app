@@ -11,21 +11,28 @@
         <span class="headline font-weight-bold" v-text="firstWord"></span>
         <span class="ml-1" v-text="description"></span>
       </div>
-      <v-chip-group class="mt-3">
-        <v-chip v-for="tag in portal.profile.keywords" :key="tag" label v-text="tag" />
-      </v-chip-group>
+      <no-ssr>
+        <v-chip-group class="mt-3">
+          <v-chip v-for="tag in portal.profile.keywords" :key="tag" label v-text="tag" />
+        </v-chip-group>
+      </no-ssr>
     </div>
   </v-sheet>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { Portal } from '@/types';
+import { Portal, PortalSettings } from '@/types';
 
 export default Vue.extend({
   props: {
     portal: {
       type: Object as () => Portal,
+      default: null,
+    },
+
+    settings: {
+      type: Object as () => PortalSettings,
       default: null,
     },
   },
@@ -37,7 +44,7 @@ export default Vue.extend({
       }
 
       return (
-        this.portal.theme.header.title ||
+        this.settings.header.title ||
         this.portal.profile.title ||
         `${this.portal.profile.firstName} ${this.portal.profile.lastName}`
       );

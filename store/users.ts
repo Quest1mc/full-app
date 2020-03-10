@@ -1,8 +1,9 @@
-import { AsyncModule, wrapModule } from 'vuex-async-mutations';
+import { AsyncModule, wrapModule, module } from 'vuex-async-mutations';
 import { UserProfile } from '@/types';
 
 type UsersState = {
   users: UserProfile[];
+  pending: number;
 };
 
 type UserParams = {
@@ -11,7 +12,7 @@ type UserParams = {
   genre?: string;
 };
 
-const stateFactory = (): UsersState => ({ users: [] });
+const stateFactory = (): UsersState => ({ users: [], pending: 0 });
 
 const mod: AsyncModule<UsersState, any> = {
   namespaced: true,
@@ -20,7 +21,13 @@ const mod: AsyncModule<UsersState, any> = {
 
   async: true,
 
+  mutations: {
+    ...module.mutations,
+  },
+
   getters: {
+    ...module.mutations,
+
     'get:bySite'(state) {
       return (site: string) => state.users.find((user) => user.site === site);
     },

@@ -10,7 +10,7 @@
 <script lang="ts">
 import Vue from 'vue';
 
-import MainNavigationBar from './MainNavigationBar.vue';
+import MainNavigationBar from '@/partials/layouts/MainNavigationBar.vue';
 
 export default Vue.extend({
   name: 'App',
@@ -24,9 +24,5 @@ export default Vue.extend({
       return this.$vuetify.theme.dark ? 'dark' : 'light';
     },
   },
-
-  data: () => ({
-    //
-  }),
 });
 </script>

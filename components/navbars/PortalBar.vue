@@ -30,9 +30,10 @@ import Vue from 'vue';
 import { Portal } from '@/types';
 
 export default Vue.extend({
-  computed: {
-    portal(): Portal {
-      return this.$store.getters['portals/get:current'];
+  props: {
+    portal: {
+      type: Object as () => Portal,
+      default: null,
     },
   },
 });

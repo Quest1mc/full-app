@@ -1,5 +1,5 @@
 <template>
-  <component :is="headerType" :portal="portal" class="portal-header" />
+  <component :is="headerType" :portal="portal" :settings="settings" class="portal-header" />
 </template>
 
 <script lang="ts">
@@ -8,12 +8,17 @@ import Vue, { VueConstructor } from 'vue';
 import TextOnly from './TextOnly.vue';
 import FullBackground from './FullBackground.vue';
 import ColorBackground from './ColorBackground.vue';
-import { Nullable, Portal } from '@/types';
+import { Nullable, Portal, PortalSettings } from '@/types';
 
 export default Vue.extend({
   props: {
     portal: {
       type: Object as () => Portal,
+      default: null,
+    },
+
+    settings: {
+      type: Object as () => PortalSettings,
       default: null,
     },
   },
@@ -24,7 +29,7 @@ export default Vue.extend({
         return null;
       }
 
-      switch (this.portal?.theme.header.type) {
+      switch (this.settings?.header.type) {
         case 'text-only':
           return TextOnly;
         case 'full-background':

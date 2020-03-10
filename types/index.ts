@@ -26,7 +26,7 @@ export type Nullable<T> = T | null;
 
 export type HeaderType = 'text-only' | 'color-background' | 'full-background';
 
-export type Theme = {
+export type PortalSettings = {
   header: {
     type: HeaderType;
     color?: string;
@@ -37,10 +37,10 @@ export type Theme = {
 };
 
 export type Portal = {
+  site: string;
   profile: UserProfile;
   username: string;
   cards: ContentItem[];
-  theme: Theme;
 };
 
 export type ContentItemType = 'Video' | 'Image';

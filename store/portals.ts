@@ -1,19 +1,15 @@
 import Vue from 'vue';
-import { AsyncModule, wrapModule } from 'vuex-async-mutations';
-import { Theme, Portal } from '@/types';
+import { AsyncModule, wrapModule, module } from 'vuex-async-mutations';
+import { Portal } from '@/types';
 
 type PortalState = {
   portals: { [name: string]: Portal };
+  pending: number;
 };
 
 const stateFactory = (): PortalState => ({
   portals: {},
-});
-
-const themeFactory = (): Theme => ({
-  header: {
-    type: 'text-only',
-  },
+  pending: 0,
 });
 
 const mod: AsyncModule<PortalState, any> = {
@@ -23,13 +19,27 @@ const mod: AsyncModule<PortalState, any> = {
 
   async: true,
 
+  mutations: {
+    ...module.mutations,
+  },
+
   getters: {
+    ...module.getters,
+
     ['get:portal'](state) {
       return (name: string): Portal => state.portals[name];
     },
 
     ['get:current'](_state, getters, rootState) {
       return getters['get:portal'](rootState.route.params.id);
+    },
+  },
+
+  actions: {
+    ['fetch:current']({ dispatch, rootState }) {
+      if (rootState.route.params.id) {
+        return dispatch('fetch:portal', rootState.route.params.id);
+      }
     },
   },
 
@@ -44,7 +54,7 @@ const mod: AsyncModule<PortalState, any> = {
       },
 
       resolved(state, portal: Portal, name: string) {
-        Vue.set(state.portals, name, { ...portal, theme: themeFactory() });
+        Vue.set(state.portals, name, { ...portal, site: name });
       },
     },
   },

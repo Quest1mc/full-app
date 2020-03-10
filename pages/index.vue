@@ -139,9 +139,9 @@
 <script lang="ts">
 import Vue from 'vue';
 
-import NewUsers from './components/NewUsers.vue';
-import ContentBlock from './components/ContentBlock.vue';
-import Upcoming from './components/Upcoming.vue';
+import NewUsers from '@/partials/NewUsers.vue';
+import ContentBlock from '@/partials/ContentBlock.vue';
+import Upcoming from '@/partials/Upcoming.vue';
 
 export default Vue.extend({
   name: 'Home',
