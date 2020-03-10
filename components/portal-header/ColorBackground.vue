@@ -1,26 +1,34 @@
 <template>
-  <v-sheet class="portal-header--color-background" elevation="1" color="#eb5286">
-    <v-row no-gutters>
-      <v-col cols="6" offset="6">
-        <v-img height="650" cover :src="image" />
-      </v-col>
-    </v-row>
+  <div>
+    <v-sheet class="portal-header--color-background" elevation="1" color="#eb5286">
+      <v-row no-gutters>
+        <v-col cols="6" offset="6">
+          <v-img height="650" cover :src="image" />
+        </v-col>
+      </v-row>
 
-    <div class="portal-header__content white--text pa-4">
-      <div class="display-3 ml-n8 my-4 font-weight-bold">{{ title }}</div>
-      <div>
-        <span class="headline font-weight-bold" v-text="firstWord"></span>
-        <span class="ml-1" v-text="description"></span>
+      <div class="portal-header__content white--text pa-4">
+        <div class="display-3 ml-n8 my-4 font-weight-bold">{{ title }}</div>
+        <div>
+          <span class="headline font-weight-bold" v-text="firstWord"></span>
+          <span class="ml-1" v-text="description"></span>
+        </div>
       </div>
-    </div>
-  </v-sheet>
+    </v-sheet>
+    <keywords :items="portal.profile.keywords" class="text-center mt-5" />
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import { Portal, PortalSettings } from '@/types';
+import Keywords from '@/components/keywords';
 
 export default Vue.extend({
+  components: {
+    Keywords,
+  },
+
   props: {
     portal: {
       type: Object as () => Portal,
