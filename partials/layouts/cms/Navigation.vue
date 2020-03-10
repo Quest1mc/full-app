@@ -47,7 +47,7 @@ export default Vue.extend({
 
     links(): any[] {
       return [
-        { title: 'Preview', icon: 'mdi-view-dashboard', to: `${this.cmsLink}` },
+        { title: 'Preview', icon: 'mdi-view-dashboard', to: `/${this.portal.site}` },
         {
           title: 'Page builder',
           icon: 'mdi-page-layout-header-footer',

@@ -1,5 +1,3 @@
-import colors from 'vuetify/es5/util/colors';
-
 export default {
   mode: 'universal',
   /*
@@ -68,19 +66,14 @@ export default {
    ** https://github.com/nuxt-community/vuetify-module
    */
   vuetify: {
-    customVariables: ['~/assets/variables.scss'],
-    theme: {
-      themes: {
-        light: {
-          primary: '#AF3AFF',
-          background: '#f2f7fa',
-        },
-        dark: {
-          primary: '#AF3AFF',
-          background: colors.shades.black,
-        },
+    optionsPath: './vuetify.options.ts',
+    defaultAssets: {
+      font: {
+        family: 'Roboto',
       },
+      icons: 'mdi',
     },
+    customVariables: ['~/assets/variables.scss'],
   },
   /*
    ** Build configuration

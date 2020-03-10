@@ -27,6 +27,10 @@ const mod: AsyncModule<PortalSettingsState, any> = {
 
   mutations: {
     ...module.mutations,
+
+    ['update'](state, { name, settings }: { name: string; settings: PortalSettings }) {
+      state.settings[name] = settings;
+    },
   },
 
   getters: {
@@ -50,6 +54,16 @@ const mod: AsyncModule<PortalSettingsState, any> = {
   },
 
   actionsAsync: {
+    ['update:settings']: {
+      handler({ commitAsync }, { name, settings }: { name: string; settings: PortalSettings }) {
+        return commitAsync(Promise.resolve(settings), name);
+      },
+
+      resolved(state, settings: PortalSettings, name: string) {
+        Vue.set(state.settings, name, settings);
+      },
+    },
+
     ['fetch:settings']: {
       handler({ state, commitAsync }, name: string) {
         if (state.settings[name]) {

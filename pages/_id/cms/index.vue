@@ -15,6 +15,10 @@ export default Vue.extend({
     },
   },
 
+  mounted() {
+    this.$router.replace('cms/pagebuilder/header');
+  },
+
   async fetch({ store, params }) {
     await store.dispatch('portalSettings/fetch:settings', params.id);
     await store.dispatch('portals/fetch:portal', params.id);

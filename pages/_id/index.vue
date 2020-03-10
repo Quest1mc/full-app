@@ -1,8 +1,12 @@
 <template>
   <v-container v-if="portal">
     <v-row justify="center">
-      <v-col cols="12" xl="8">
+      <v-col cols="12" xl="10">
         <portal-header :portal="portal" :settings="settings" />
+      </v-col>
+    </v-row>
+    <v-row justify="center">
+      <v-col cols="12" xl="8">
         <component :is="pageType" :portal="portal" :settings="settings" />
         <div class="mt-12 text-center">
           <v-btn outlined x-large :to="`/${portal.site}/cms`">Edit</v-btn>
