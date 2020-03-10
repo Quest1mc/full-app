@@ -1,6 +1,14 @@
 <template>
   <v-scale-transition group class="row">
-    <v-col cols="6" sm="4" md="4" lg="3" v-for="(item, index) in items" :key="item.id">
+    <v-col
+      cols="6"
+      sm="4"
+      md="4"
+      lg="3"
+      v-for="(item, index) in items"
+      :key="item.id"
+      @click="$emit('select', item)"
+    >
       <slot name="item" v-bind="{ item, index }" />
     </v-col>
   </v-scale-transition>

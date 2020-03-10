@@ -5,6 +5,7 @@
     <v-content>
       <nuxt />
     </v-content>
+    <media-drawer />
   </v-app>
 </template>
 
@@ -13,12 +14,14 @@ import Vue from 'vue';
 
 import MainNavigationBar from '@/partials/layouts/MainNavigationBar.vue';
 import PortalBar from '@/components/navbars/PortalBar.vue';
+import MediaDrawer from '@/partials/MediaDrawerWrapper.vue';
 
 export default Vue.extend({
   name: 'App',
 
   components: {
     MainNavigationBar,
+    MediaDrawer,
     PortalBar,
   },
 

@@ -64,52 +64,6 @@ export default Vue.extend({
         `${this.portal.profile.firstName} ${this.portal.profile.lastName}`
       );
     },
-
-    firstWord(): string {
-      return this.portal.profile.description
-        .split(' ')
-        .slice(0, 3)
-        .join(' ');
-    },
-
-    description(): string {
-      return this.portal.profile.description
-        .split(' ')
-        .slice(3)
-        .join(' ');
-    },
   },
 });
 </script>
-
-<style lang="scss" scoped>
-.v-sheet {
-  position: relative;
-}
-
-.portal-header {
-  &__content {
-    $offset: 15%;
-
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 60%;
-    transform: translate(-50% - $offset, -50%);
-    text-align: center;
-
-    &:before {
-      content: '';
-      position: absolute;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      width: 50% - $offset;
-      z-index: -1;
-      background-color: rgba(#000, 0.15);
-      border-top-right-radius: 4px;
-      border-bottom-right-radius: 4px;
-    }
-  }
-}
-</style>

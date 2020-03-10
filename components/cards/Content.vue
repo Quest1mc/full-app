@@ -1,5 +1,5 @@
 <template>
-  <component class="content-card" :is="contentType" :item="item" />
+  <component @click="$emit('click', $event)" class="content-card" :is="contentType" :item="item" />
 </template>
 
 <script lang="ts">

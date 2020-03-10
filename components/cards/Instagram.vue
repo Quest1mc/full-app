@@ -71,6 +71,12 @@ export default Vue.extend({
       };
     },
   },
+
+  methods: {
+    click() {
+      console.log('click.insta');
+    },
+  },
 });
 </script>
 
