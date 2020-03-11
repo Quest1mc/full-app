@@ -1,7 +1,7 @@
 <template>
   <v-app :style="{ background: $vuetify.theme.themes[theme].background }">
     <main-navigation-bar />
-    <portal-bar :portal="portal" />
+    <portal-bar />
     <v-content>
       <nuxt />
     </v-content>
@@ -12,9 +12,8 @@
 <script lang="ts">
 import Vue from 'vue';
 
-import MainNavigationBar from '@/partials/layouts/MainNavigationBar.vue';
-import PortalBar from '@/components/navbars/PortalBar.vue';
-import MediaDrawer from '@/partials/MediaDrawerWrapper.vue';
+import { PortalBar, MainNavigationBar } from '@/containers/navigation';
+import MediaDrawer from '@/containers/media-drawer';
 
 export default Vue.extend({
   name: 'App',
@@ -28,10 +27,6 @@ export default Vue.extend({
   computed: {
     theme() {
       return this.$vuetify.theme.dark ? 'dark' : 'light';
-    },
-
-    portal() {
-      return this.$store.getters['portals/get:current'];
     },
   },
 });

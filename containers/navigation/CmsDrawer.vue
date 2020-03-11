@@ -33,16 +33,13 @@ import Vue from 'vue';
 import { Portal } from '@/types';
 
 export default Vue.extend({
-  props: {
-    portal: {
-      type: Object as () => Portal,
-      default: null,
-    },
-  },
-
   computed: {
     cmsLink(): string {
       return `/${this.portal.site}/cms`;
+    },
+
+    portal(): Portal {
+      return this.$store.getters['portals/get:current'];
     },
 
     links(): any[] {

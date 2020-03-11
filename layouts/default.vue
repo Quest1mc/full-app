@@ -10,7 +10,7 @@
 <script lang="ts">
 import Vue from 'vue';
 
-import MainNavigationBar from '@/partials/layouts/MainNavigationBar.vue';
+import { MainNavigationBar } from '@/containers/navigation';
 
 export default Vue.extend({
   name: 'App',

@@ -19,7 +19,6 @@ export default Vue.extend({
 
     showMedia: {
       get(): boolean {
-        console.log('show media?', this.currentItem, this.$store.getters['media/get:visibility']);
         return !!this.currentItem && this.$store.getters['media/get:visibility'];
       },
 

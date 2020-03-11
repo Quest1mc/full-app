@@ -19,8 +19,7 @@
 <script lang="ts">
 import Vue, { VueConstructor } from 'vue';
 
-import PremiumPage from '@/partials/_id/Premium.vue';
-import BasicPage from '@/partials/_id//Basic.vue';
+import { Premium as PremiumPage, Basic as BasicPage } from '@/containers/pages';
 import PortalHeader from '@/components/portal-header';
 import { Portal, PortalSettings } from '@/types';
 

@@ -11,20 +11,18 @@ import Timeline from '@/components/timeline';
 import { Portal, ContentItem } from '@/types';
 
 export default Vue.extend({
-  props: {
-    portal: {
-      type: Object as () => Portal,
-      default: null,
-    },
-  },
-
   components: {
     Timeline,
   },
 
+  computed: {
+    portal(): Portal {
+      return this.$store.getters['portals/get:current'];
+    },
+  },
+
   methods: {
     selectItem(item: ContentItem) {
-      console.log('selectItem', item);
       this.$store.commit('media/set:selected', item);
     },
   },
