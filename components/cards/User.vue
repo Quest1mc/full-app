@@ -10,14 +10,15 @@
   </router-link>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue';
 import BaseCard from './Base.vue';
+import { UserProfile } from '@/types';
 
 export default Vue.extend({
   props: {
     user: {
-      type: Object,
+      type: Object as () => UserProfile,
       default: null,
     },
   },

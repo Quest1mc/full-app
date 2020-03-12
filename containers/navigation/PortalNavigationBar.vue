@@ -18,22 +18,46 @@
     ></div>
     <v-spacer></v-spacer>
 
-    <v-btn to="/netwerk" class="text-lowercase headline font-weight-bold align-self-center" text>
+    <v-btn
+      :to="portalLink('ambassadors')"
+      class="text-lowercase headline font-weight-bold align-self-center"
+      text
+    >
       ambassadors
     </v-btn>
-    <v-btn to="/videowall" class="text-lowercase headline font-weight-bold align-self-center" text>
+    <v-btn
+      :to="portalLink('updates')"
+      class="text-lowercase headline font-weight-bold align-self-center"
+      text
+    >
       updates
     </v-btn>
-    <v-btn to="/readmore" class="text-lowercase headline font-weight-bold align-self-center" text>
+    <v-btn
+      :to="portalLink('videos')"
+      class="text-lowercase headline font-weight-bold align-self-center"
+      text
+    >
       videos
     </v-btn>
-    <v-btn to="/readmore" class="text-lowercase headline font-weight-bold align-self-center" text>
+    <v-btn
+      :to="portalLink('events')"
+      class="text-lowercase headline font-weight-bold align-self-center"
+      text
+    >
       events
     </v-btn>
-    <v-btn to="/readmore" class="text-lowercase headline font-weight-bold align-self-center" text>
+    <v-btn
+      :to="portalLink('creatives')"
+      class="text-lowercase headline font-weight-bold align-self-center"
+      text
+    >
       creatives
     </v-btn>
-    <v-btn to="/readmore" class="text-lowercase headline font-weight-bold align-self-center" text>
+    <v-btn
+      :to="portalLink('places')"
+      class="text-lowercase headline font-weight-bold align-self-center"
+      text
+    >
       places
     </v-btn>
 
@@ -56,6 +80,10 @@ export default Vue.extend({
   },
 
   computed: {
+    portalLink() {
+      return (page: string): string => `/portal/${this.portal.site}/${page}`;
+    },
+
     signedIn(): boolean {
       return this.$store.getters['account/isAuthenticated'];
     },

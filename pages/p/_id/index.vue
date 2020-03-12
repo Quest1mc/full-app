@@ -23,9 +23,8 @@
 </template>
 
 <script lang="ts">
-import Vue, { VueConstructor } from 'vue';
+import Vue from 'vue';
 
-import { Premium as PremiumPage, Basic as BasicPage } from '@/partials/page';
 import PortalHeader from '@/components/portal-header';
 import { Portal, PortalSettings } from '@/types';
 import { Masonry as MasonryGrid } from '@/components/grids';
@@ -47,15 +46,6 @@ export default Vue.extend({
 
     settings(): PortalSettings {
       return this.$store.getters['portalSettings/get:current'];
-    },
-
-    pageType(): VueConstructor {
-      switch (this.portal?.profile.type) {
-        case 'premium':
-          return PremiumPage;
-        default:
-          return BasicPage;
-      }
     },
   },
 

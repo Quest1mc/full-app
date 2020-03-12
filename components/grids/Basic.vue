@@ -1,12 +1,13 @@
 <template>
   <v-scale-transition group class="row">
     <v-col
-      cols="6"
-      sm="4"
-      md="4"
-      lg="3"
+      :cols="cols"
+      :sm="sm"
+      :md="md"
+      :lg="lg"
+      :xl="xl"
       v-for="(item, index) in items"
-      :key="item.id"
+      :key="item.id || index"
       @click="$emit('select', item)"
     >
       <slot name="item" v-bind="{ item, index }" />
@@ -23,6 +24,31 @@ export default Vue.extend({
     items: {
       type: Array as () => ContentItem[],
       default: [],
+    },
+
+    cols: {
+      type: Number,
+      default: 6,
+    },
+
+    sm: {
+      type: Number,
+      default: 4,
+    },
+
+    md: {
+      type: Number,
+      default: 4,
+    },
+
+    lg: {
+      type: Number,
+      default: 3,
+    },
+
+    xl: {
+      type: Number,
+      default: 3,
     },
   },
 });
