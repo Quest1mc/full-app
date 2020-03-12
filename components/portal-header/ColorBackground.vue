@@ -3,7 +3,12 @@
     <v-sheet class="portal-header--color-background" elevation="1" color="#eb5286">
       <v-row no-gutters>
         <v-col cols="6" offset="6">
-          <v-img height="650" cover :src="image" />
+          <v-img
+            height="650"
+            cover
+            :src="image"
+            gradient="to left, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)"
+          />
         </v-col>
       </v-row>
 
@@ -91,18 +96,18 @@ export default Vue.extend({
     transform: translate(-50% - $offset, -50%);
     text-align: center;
 
-    &:before {
-      content: '';
-      position: absolute;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      width: 50% - $offset;
-      z-index: -1;
-      background-color: rgba(#000, 0.15);
-      border-top-right-radius: 4px;
-      border-bottom-right-radius: 4px;
-    }
+    // &:before {
+    //   content: '';
+    //   position: absolute;
+    //   right: 0;
+    //   top: 0;
+    //   bottom: 0;
+    //   width: 50% - $offset;
+    //   z-index: -1;
+    //   background-color: rgba(#000, 0.15);
+    //   border-top-right-radius: 4px;
+    //   border-bottom-right-radius: 4px;
+    // }
   }
 }
 </style>

@@ -1,17 +1,17 @@
 <template>
-  <base-card class="content-card--instagram">
+  <base-card class="content-card--instagram" style="min-height: 250px;">
     <template v-slot:icon>
       <v-icon color="white">mdi-instagram</v-icon>
     </template>
+
+    <v-skeleton-loader type="card" v-if="!isActive" />
 
     <v-lazy v-model="isActive">
       <v-img
         aspect-ratio="1"
         v-if="item.type === 'Image' || item.type === 'Carousel'"
         cover
-        width="100%"
-        height="auto"
-        :src="item.metadata.images.low_resolution.url"
+        :src="thumbs[1]"
       />
       <v-responsive aspect-ratio="1" v-else-if="item.type === 'Video'" class="black">
         <video-player :options="videoOptions" />
@@ -53,6 +53,13 @@ export default Vue.extend({
   },
 
   computed: {
+    thumbs(): string[] {
+      return [
+        this.item.metadata.images.thumbnail.url,
+        this.item.metadata.images.low_resolution.url,
+      ];
+    },
+
     date(): string {
       return moment(this.item.date).calendar();
     },
@@ -69,12 +76,6 @@ export default Vue.extend({
         autoplay: false,
         preload: 'auto',
       };
-    },
-  },
-
-  methods: {
-    click() {
-      console.log('click.insta');
     },
   },
 });

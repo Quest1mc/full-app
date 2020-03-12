@@ -1,5 +1,5 @@
 <template>
-  <v-card color="transparent" class="transparent" elevation="0">
+  <v-card color="transparent" class="transparent" elevation="0" v-if="portal">
     <v-navigation-drawer floating permanent left color="transparent" width="300">
       <v-list>
         <template v-for="item in links">

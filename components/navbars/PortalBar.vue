@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar inverted-scroll app dense color="white" class="flex-grow-0">
+  <v-app-bar inverted-scroll app dense clipped-right color="white" class="flex-grow-0">
     <v-container>
       <v-row>
         <div class="d-flex align-center justify-center">

@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar color="#f2f7fa" flat class="flex-grow-0">
+  <v-app-bar color="#f2f7fa" flat class="flex-grow-0" clipped-right>
     <v-container>
       <v-row>
         <div class="d-flex align-center justify-center">

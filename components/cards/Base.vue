@@ -1,9 +1,8 @@
 <template>
   <v-sheet style="position: relative;" elevation="1">
-    <v-responsive :aspect-ratio="aspectRatio">
+    <div style="min-height: 250px;">
       <slot />
-    </v-responsive>
-
+    </div>
     <div v-if="$slots['icon']" style="position: absolute; top: 5px; right: 5px;">
       <slot name="icon" />
     </div>

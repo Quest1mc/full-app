@@ -2,7 +2,7 @@
   <div>
     <v-sheet class="portal-header--full-background" elevation="1">
       <v-img
-        height="650"
+        height="45vh"
         cover
         :src="image"
         class="text-center align-center"

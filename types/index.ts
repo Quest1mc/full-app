@@ -67,6 +67,7 @@ export type ContentMetaData = {
   attachments: {
     data: ContentAttachment[];
   };
+  thumbnails: any;
   images: any;
   videos: any;
 };

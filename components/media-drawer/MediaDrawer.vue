@@ -4,10 +4,11 @@
     @input="$emit('input', $event)"
     right
     app
+    clipped
+    bottom
     width="100%"
     fixed
-    temporary
-    style="max-width: 500px"
+    style="max-width: 800px"
   >
   </v-navigation-drawer>
 </template>
