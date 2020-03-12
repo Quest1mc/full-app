@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-sheet class="portal-header--color-background" elevation="1" color="#eb5286">
+    <v-sheet class="portal-header--color-background" :elevation="flat ? 0 : 1" color="#eb5286">
       <v-row no-gutters>
         <v-col cols="6" offset="6">
           <v-img
@@ -43,6 +43,11 @@ export default Vue.extend({
     settings: {
       type: Object as () => PortalSettings,
       default: null,
+    },
+
+    flat: {
+      type: Boolean,
+      default: false,
     },
   },
 

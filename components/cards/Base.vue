@@ -3,7 +3,7 @@
     <div style="min-height: 250px;">
       <slot />
     </div>
-    <div v-if="$slots['icon']" style="position: absolute; top: 5px; right: 5px;">
+    <div v-if="$slots['icon']" style="position: absolute; top: 0; right: 0;" class="black pa-1">
       <slot name="icon" />
     </div>
   </v-sheet>

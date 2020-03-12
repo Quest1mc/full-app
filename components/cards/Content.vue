@@ -1,5 +1,11 @@
 <template>
-  <component @click="$emit('click', $event)" class="content-card" :is="contentType" :item="item" />
+  <component
+    @click="$emit('click', $event)"
+    class="content-card"
+    :is="contentType"
+    :item="item"
+    :clipped="clipped"
+  />
 </template>
 
 <script lang="ts">
@@ -14,6 +20,11 @@ export default Vue.extend({
   props: {
     item: {
       type: Object as () => ContentItem,
+    },
+
+    clipped: {
+      type: Boolean,
+      default: true,
     },
   },
 

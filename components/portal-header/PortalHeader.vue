@@ -1,5 +1,11 @@
 <template>
-  <component :is="headerType" :portal="portal" :settings="settings" class="portal-header" />
+  <component
+    :is="headerType"
+    :portal="portal"
+    :flat="flat"
+    :settings="settings"
+    class="portal-header"
+  />
 </template>
 
 <script lang="ts">
@@ -20,6 +26,11 @@ export default Vue.extend({
     settings: {
       type: Object as () => PortalSettings,
       default: null,
+    },
+
+    flat: {
+      type: Boolean,
+      default: false,
     },
   },
 

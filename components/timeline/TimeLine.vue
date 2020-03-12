@@ -15,7 +15,7 @@ import Vue from 'vue';
 import Channels from './Channels.vue';
 import { ContentItem, ContentChannel } from '@/types';
 
-import BasicGrid from '@/components/media-grid/Basic.vue';
+import BasicGrid from '@/components/grids/Basic.vue';
 import ContentCard from '@/components/cards/Content.vue';
 
 export default Vue.extend({

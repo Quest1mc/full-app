@@ -1,13 +1,14 @@
 <template>
   <base-card class="content-card--youtube" icon="mdi-youtube">
-    <v-skeleton-loader type="card" v-if="!isActive" />
+    <template v-slot:icon>
+      <v-icon color="white">mdi-youtube</v-icon>
+    </template>
 
-    <v-lazy transition="fade-transition" v-model="isActive">
-      <v-img cover width="100%" height="auto" :src="thumbs[1]" />
-      <!-- <youtube :video-id="item.id" player-width="100%" player-height="auto" /> -->
-    </v-lazy>
-    <div class="ma-2" v-if="isActive && (item.title || item.description)" v-line-clamp:24="5">
-      {{ item.title || item.description }}
+    <v-img cover width="100%" height="auto" :lazy-src="thumbs[0]" :src="thumbs[1]" />
+
+    <div class="ma-2" v-if="item.description">
+      <div v-if="!clipped" v-text="item.description"></div>
+      <div v-else v-line-clamp:24="5" v-text="item.description"></div>
     </div>
   </base-card>
 </template>
@@ -22,6 +23,10 @@ export default Vue.extend({
   props: {
     item: {
       type: Object as () => ContentItem,
+    },
+
+    clipped: {
+      type: Boolean,
     },
   },
 

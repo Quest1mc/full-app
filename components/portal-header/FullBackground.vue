@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-sheet class="portal-header--full-background" elevation="1">
+    <v-sheet class="portal-header--full-background" :elevation="flat ? 0 : 1">
       <v-img
         height="45vh"
         cover
@@ -41,6 +41,11 @@ export default Vue.extend({
     settings: {
       type: Object as () => PortalSettings,
       default: null,
+    },
+
+    flat: {
+      type: Boolean,
+      default: false,
     },
   },
 

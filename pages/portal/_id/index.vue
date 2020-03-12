@@ -2,15 +2,16 @@
   <v-container v-if="portal">
     <v-row justify="center">
       <v-col cols="12" xl="8">
-        <portal-header :portal="portal" :settings="settings" />
+        <portal-header :portal="portal" :settings="settings" flat />
       </v-col>
     </v-row>
     <v-row justify="center">
       <v-col cols="12" xl="8">
-        <component :is="pageType" :portal="portal" :settings="settings" />
-        <div class="mt-12 text-center">
-          <v-btn outlined x-large :to="`/${portal.site}/cms`">Edit</v-btn>
-        </div>
+        <masonry-grid :items="portal.cards">
+          <template v-slot:item="{ item }">
+            <content-card :item="item" :clipped="false" style="height: 100%; min-height: 100%;" />
+          </template>
+        </masonry-grid>
       </v-col>
     </v-row>
   </v-container>
@@ -22,12 +23,16 @@ import Vue, { VueConstructor } from 'vue';
 import { Premium as PremiumPage, Basic as BasicPage } from '@/partials/page';
 import PortalHeader from '@/components/portal-header';
 import { Portal, PortalSettings } from '@/types';
+import { Masonry as MasonryGrid } from '@/components/grids';
+import ContentCard from '@/components/cards/Content.vue';
 
 export default Vue.extend({
-  layout: 'page',
+  layout: 'portal',
 
   components: {
     PortalHeader,
+    MasonryGrid,
+    ContentCard,
   },
 
   computed: {

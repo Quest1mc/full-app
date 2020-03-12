@@ -2,7 +2,7 @@
   <div>
     <v-sheet
       class="portal-header--text-only justify-center d-flex flex-column py-8 pr-8"
-      elevation="1"
+      :elevation="flat ? 0 : 1"
       min-height="300"
     >
       <div style="padding-left: 100px;">
@@ -38,6 +38,11 @@ export default Vue.extend({
     settings: {
       type: Object as () => PortalSettings,
       default: null,
+    },
+
+    flat: {
+      type: Boolean,
+      default: false,
     },
   },
 

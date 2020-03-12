@@ -1,25 +1,23 @@
 <template>
-  <base-card class="content-card--instagram" style="min-height: 250px;">
+  <base-card class="content-card--instagram" style="min-height: 250px; overflow: hidden;">
     <template v-slot:icon>
       <v-icon color="white">mdi-instagram</v-icon>
     </template>
 
-    <v-skeleton-loader type="card" v-if="!isActive" />
+    <v-img
+      aspect-ratio="1"
+      v-if="item.type === 'Image' || item.type === 'Carousel'"
+      cover
+      :lazy-src="thumbs[0]"
+      :src="thumbs[1]"
+    />
+    <v-responsive aspect-ratio="1" v-else-if="item.type === 'Video'" class="black">
+      <video-player :options="videoOptions" />
+    </v-responsive>
 
-    <v-lazy v-model="isActive">
-      <v-img
-        aspect-ratio="1"
-        v-if="item.type === 'Image' || item.type === 'Carousel'"
-        cover
-        :src="thumbs[1]"
-      />
-      <v-responsive aspect-ratio="1" v-else-if="item.type === 'Video'" class="black">
-        <video-player :options="videoOptions" />
-      </v-responsive>
-    </v-lazy>
-
-    <div class="ma-2" v-if="isActive && item.description" v-line-clamp:24="5">
-      {{ item.description }}
+    <div class="ma-2" v-if="item.description">
+      <div v-if="!clipped" v-text="item.description"></div>
+      <div v-else v-line-clamp:24="5" v-text="item.description"></div>
     </div>
   </base-card>
 </template>
@@ -38,6 +36,10 @@ export default Vue.extend({
   props: {
     item: {
       type: Object as () => ContentItem,
+    },
+
+    clipped: {
+      type: Boolean,
     },
   },
 

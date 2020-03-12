@@ -31,6 +31,7 @@ export default {
   plugins: [
     { src: '~/plugins/lineclamp', mode: 'client' },
     { src: '~/plugins/youtube', mode: 'client' },
+    { src: '~/plugins/vue-masonry', mode: 'client', ssr: false },
   ],
   /*
    ** Nuxt.js dev-modules
