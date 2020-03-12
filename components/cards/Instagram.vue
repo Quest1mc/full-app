@@ -4,16 +4,10 @@
       <v-icon color="white">mdi-instagram</v-icon>
     </template>
 
-    <v-img
-      aspect-ratio="1"
-      v-if="item.type === 'Image' || item.type === 'Carousel'"
-      cover
-      :lazy-src="thumbs[0]"
-      :src="thumbs[1]"
-    />
-    <v-responsive aspect-ratio="1" v-else-if="item.type === 'Video'" class="black">
+    <v-img aspect-ratio="1" cover :lazy-src="thumbs[0]" :src="thumbs[1]" />
+    <!-- <v-responsive aspect-ratio="1" v-else-if="item.type === 'Video'" class="black">
       <video-player :options="videoOptions" />
-    </v-responsive>
+    </v-responsive> -->
 
     <div class="ma-2" v-if="item.description">
       <div v-if="!clipped" v-text="item.description"></div>
@@ -27,7 +21,6 @@ import Vue from 'vue';
 import { ContentItem } from '@/types';
 
 import BaseCard from './Base.vue';
-import VideoPlayer from '@/components/video-player';
 
 import { VideoJsPlayerOptions } from 'video.js';
 import moment from 'moment';
@@ -51,7 +44,6 @@ export default Vue.extend({
 
   components: {
     BaseCard,
-    VideoPlayer,
   },
 
   computed: {

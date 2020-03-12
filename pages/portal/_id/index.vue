@@ -9,7 +9,12 @@
       <v-col cols="12" xl="8">
         <masonry-grid :items="portal.cards">
           <template v-slot:item="{ item }">
-            <content-card :item="item" :clipped="false" style="height: 100%; min-height: 100%;" />
+            <content-card
+              :item="item"
+              :clipped="false"
+              style="height: 100%; min-height: 100%;"
+              class="mb-5"
+            />
           </template>
         </masonry-grid>
       </v-col>

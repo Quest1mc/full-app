@@ -4,7 +4,7 @@
     <v-content>
       <nuxt />
     </v-content>
-    <media-drawer />
+    <!-- <media-drawer /> -->
   </v-app>
 </template>
 
@@ -19,7 +19,7 @@ export default Vue.extend({
 
   components: {
     PortalNavigationBar,
-    MediaDrawer,
+    // MediaDrawer,
   },
 
   computed: {

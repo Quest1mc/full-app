@@ -1,19 +1,11 @@
 <template>
   <div>
     <no-ssr>
-      <div v-masonry transition-duration="0.5s" item-selector=".item" class="masonry-container">
-        <v-col
-          v-masonry-tile
-          class="item"
-          cols="6"
-          sm="4"
-          v-for="(item, index) in items"
-          :key="item.id"
-          @click="$emit('select', item)"
-        >
+      <masonry :cols="{ default: 3, 700: 2 }" :gutter="20">
+        <div v-for="(item, index) in items" :key="item.id" @click="$emit('select', item)">
           <slot name="item" v-bind="{ item, index }" />
-        </v-col>
-      </div>
+        </div>
+      </masonry>
     </no-ssr>
   </div>
 </template>
