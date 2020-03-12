@@ -11,54 +11,26 @@
     clipped-right
     min-height="70"
   >
-    <div
-      style="font-size: 2.5em; color: #d59154;"
-      class="font-weight-bold align-self-center"
+    <nuxt-link
+      :to="portalLink"
+      x-large
+      exact
+      style="font-size: 2.5em; color: #d59154; text-decoration: none;"
+      class="font-weight-bold align-self-center text-"
       v-text="title"
-    ></div>
+    >
+    </nuxt-link>
+
     <v-spacer></v-spacer>
 
     <v-btn
-      :to="portalLink('ambassadors')"
+      v-for="link in links"
+      :key="link.to"
+      :to="link.to"
       class="text-lowercase headline font-weight-bold align-self-center"
       text
+      v-text="link.title"
     >
-      ambassadors
-    </v-btn>
-    <v-btn
-      :to="portalLink('updates')"
-      class="text-lowercase headline font-weight-bold align-self-center"
-      text
-    >
-      updates
-    </v-btn>
-    <v-btn
-      :to="portalLink('videos')"
-      class="text-lowercase headline font-weight-bold align-self-center"
-      text
-    >
-      videos
-    </v-btn>
-    <v-btn
-      :to="portalLink('events')"
-      class="text-lowercase headline font-weight-bold align-self-center"
-      text
-    >
-      events
-    </v-btn>
-    <v-btn
-      :to="portalLink('creatives')"
-      class="text-lowercase headline font-weight-bold align-self-center"
-      text
-    >
-      creatives
-    </v-btn>
-    <v-btn
-      :to="portalLink('places')"
-      class="text-lowercase headline font-weight-bold align-self-center"
-      text
-    >
-      places
     </v-btn>
 
     <auth-bar />
@@ -80,8 +52,46 @@ export default Vue.extend({
   },
 
   computed: {
-    portalLink() {
-      return (page: string): string => `/portal/${this.portal.site}/${page}`;
+    links(): any[] {
+      return [
+        {
+          to: this.pageLink('ambassadors'),
+          title: 'Ambassadors',
+        },
+
+        {
+          to: this.pageLink('updates'),
+          title: 'Updates',
+        },
+
+        {
+          to: this.pageLink('videos'),
+          title: 'Videos',
+        },
+
+        {
+          to: this.pageLink('events'),
+          title: 'Events',
+        },
+
+        {
+          to: this.pageLink('creatives'),
+          title: 'Creatives',
+        },
+
+        {
+          to: this.pageLink('places'),
+          title: 'Places',
+        },
+      ];
+    },
+
+    portalLink(): string {
+      return `/p/${this.portal.site}`;
+    },
+
+    pageLink() {
+      return (page: string): string => `${this.portalLink}/${page}`;
     },
 
     signedIn(): boolean {

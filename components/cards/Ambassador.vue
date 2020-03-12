@@ -31,10 +31,6 @@ export default Vue.extend({
       default: null,
     },
   },
-
-  mounted() {
-    console.log(this.user);
-  },
 });
 </script>
 
