@@ -4,9 +4,9 @@
     @input="$emit('input', $event)"
     right
     app
-    clipped
     bottom
     width="100%"
+    temporary
     fixed
     style="max-width: 800px"
   >
