@@ -4,7 +4,14 @@
       <v-icon color="white">mdi-instagram</v-icon>
     </template>
 
-    <v-img cover :aspect-ratio="aspectRatio" :lazy-src="thumbs[0]" :src="thumbs[1]" />
+    <v-img
+      cover
+      width="100%"
+      height="auto"
+      :aspect-ratio="aspectRatio"
+      :lazy-src="sources[0]"
+      :src="sources[quality]"
+    />
 
     <div class="ma-2" v-if="!hideDetails && (item.description || item.title)">
       <div v-if="!clipped" v-text="item.description || item.title"></div>
@@ -40,6 +47,11 @@ export default Vue.extend({
     aspectRatio: {
       type: Number,
     },
+
+    quality: {
+      type: Number,
+      default: 1,
+    },
   },
 
   data() {
@@ -53,10 +65,11 @@ export default Vue.extend({
   },
 
   computed: {
-    thumbs(): string[] {
+    sources(): string[] {
       return [
         this.item.metadata.images.thumbnail.url,
         this.item.metadata.images.low_resolution.url,
+        this.item.metadata.images.standard_resolution.url,
       ];
     },
 

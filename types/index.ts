@@ -45,6 +45,14 @@ export type Portal = {
 
 export type ContentItemType = 'Video' | 'Image';
 
+export type EventItem = {
+  title: string;
+  description: string;
+  image: string;
+  location: string;
+  date: any;
+};
+
 export type ContentItem = {
   id: string;
   title: string;

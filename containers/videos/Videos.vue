@@ -1,7 +1,14 @@
 <template>
   <v-row justify="center">
-    <v-col cols="12" sm="6" v-for="video in videos" :key="video.id">
-      <content-card :item="video" hide-details elevation="1" />
+    <v-col cols="12" sm="6" v-for="video in videos" :key="video.id" elevation="0">
+      <content-card
+        :item="video"
+        hide-details
+        elevation="1"
+        :aspect-ratio="16 / 9"
+        :quality="2"
+        tile
+      />
     </v-col>
   </v-row>
 </template>

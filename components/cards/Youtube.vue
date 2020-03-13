@@ -4,7 +4,14 @@
       <v-icon color="white">mdi-youtube</v-icon>
     </template>
 
-    <v-img cover :aspect-ratio="aspectRatio" :lazy-src="thumbs[0]" :src="thumbs[1]" />
+    <v-img
+      width="100%"
+      height="auto"
+      cover
+      :aspect-ratio="aspectRatio"
+      :lazy-src="thumbs[0]"
+      :src="thumbs[quality]"
+    />
 
     <div class="ma-2" v-if="!hideDetails && (item.description || item.title)">
       <div v-if="!clipped" v-text="item.description || item.title"></div>
@@ -36,6 +43,11 @@ export default Vue.extend({
 
     aspectRatio: {
       type: Number,
+    },
+
+    quality: {
+      type: Number,
+      default: 1,
     },
   },
 
