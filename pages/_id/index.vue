@@ -56,7 +56,7 @@ export default Vue.extend({
         case 'premium':
           return PremiumPage;
         default:
-          return BasicPage;
+          return PremiumPage;
       }
     },
   },

@@ -5,6 +5,8 @@
     :is="contentType"
     :item="item"
     :clipped="clipped"
+    :hide-details="hideDetails"
+    :aspect-ratio="aspectRatio"
   />
 </template>
 
@@ -25,6 +27,16 @@ export default Vue.extend({
     clipped: {
       type: Boolean,
       default: true,
+    },
+
+    hideDetails: {
+      type: Boolean,
+      default: false,
+    },
+
+    aspectRatio: {
+      type: Number,
+      default: undefined,
     },
   },
 

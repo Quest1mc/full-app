@@ -1,9 +1,11 @@
 <template>
   <v-sheet style="position: relative;" elevation="1">
-    <div style="min-height: 250px;">
-      <slot />
-    </div>
-    <div v-if="$slots['icon']" style="position: absolute; top: 0; right: 0;" class="black pa-1">
+    <slot />
+    <div
+      v-if="$slots['icon']"
+      style="position: absolute; top: 0; right: 0;"
+      class="black pa-1 elevation-1"
+    >
       <slot name="icon" />
     </div>
   </v-sheet>

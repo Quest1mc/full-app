@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-divider />
-    <div class="display-3 my-12 text-center font-weight-normal">Latest updates</div>
+    <div class="display-3 my-12 text-center font-weight-regular">Latest updates</div>
     <timeline :items="portal.cards" v-if="portal.cards.length" @select="selectItem" />
   </div>
 </template>

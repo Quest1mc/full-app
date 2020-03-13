@@ -1,15 +1,12 @@
 <template>
-  <base-card class="content-card--instagram" style="min-height: 250px; overflow: hidden;">
+  <base-card class="content-card--instagram" style="overflow: hidden;">
     <template v-slot:icon>
       <v-icon color="white">mdi-instagram</v-icon>
     </template>
 
-    <v-img aspect-ratio="1" cover :lazy-src="thumbs[0]" :src="thumbs[1]" />
-    <!-- <v-responsive aspect-ratio="1" v-else-if="item.type === 'Video'" class="black">
-      <video-player :options="videoOptions" />
-    </v-responsive> -->
+    <v-img cover :aspect-ratio="aspectRatio" :lazy-src="thumbs[0]" :src="thumbs[1]" />
 
-    <div class="ma-2" v-if="item.description || item.title">
+    <div class="ma-2" v-if="!hideDetails && (item.description || item.title)">
       <div v-if="!clipped" v-text="item.description || item.title"></div>
       <div v-else v-line-clamp:24="5" v-text="item.description || item.title"></div>
     </div>
@@ -33,6 +30,14 @@ export default Vue.extend({
 
     clipped: {
       type: Boolean,
+    },
+
+    hideDetails: {
+      type: Boolean,
+    },
+
+    aspectRatio: {
+      type: Number,
     },
   },
 
