@@ -1,38 +1,32 @@
 <template>
-  <div>
-    <v-sheet class="portal-header--color-background" :elevation="flat ? 0 : 1" color="#eb5286">
-      <v-row no-gutters>
-        <v-col cols="6" offset="6">
-          <v-img
-            height="650"
-            cover
-            :src="image"
-            gradient="to left, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)"
-          />
-        </v-col>
-      </v-row>
+  <v-sheet class="portal-header--color-background" :elevation="flat ? 0 : 1" color="#eb5286">
+    <v-row no-gutters>
+      <v-col cols="6" offset="6">
+        <v-img
+          height="650"
+          cover
+          :src="image"
+          gradient="to left, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)"
+        />
+      </v-col>
+    </v-row>
 
-      <div class="portal-header__content white--text pa-4">
-        <div class="display-3 ml-n8 my-4 font-weight-bold">{{ title }}</div>
-        <div>
-          <span class="headline font-weight-bold" v-text="firstWord"></span>
-          <span class="ml-1" v-text="description"></span>
-        </div>
+    <div class="portal-header__content white--text pa-4">
+      <div class="display-3 ml-n8 my-4 font-weight-bold">{{ title }}</div>
+      <div>
+        <span class="headline font-weight-bold" v-text="firstWord"></span>
+        <span class="ml-1" v-text="description"></span>
       </div>
-    </v-sheet>
-    <keywords :items="portal.profile.keywords" class="text-center mt-5" />
-  </div>
+    </div>
+  </v-sheet>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import { Portal, PortalSettings } from '@/types';
-import Keywords from '@/components/keywords';
 
 export default Vue.extend({
-  components: {
-    Keywords,
-  },
+  components: {},
 
   props: {
     portal: {

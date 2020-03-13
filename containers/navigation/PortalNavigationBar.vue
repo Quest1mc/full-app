@@ -29,6 +29,7 @@
       :to="link.to"
       class="text-lowercase headline font-weight-bold align-self-center"
       text
+      x-large
       v-text="link.title"
     >
     </v-btn>

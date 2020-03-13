@@ -5,7 +5,10 @@ export default {
     themes: {
       light: {
         primary: '#AF3AFF',
-        background: '#FFF',
+        background: {
+          page: '#f2f7fa',
+          portal: '#fff',
+        },
       },
       dark: {
         primary: '#AF3AFF',

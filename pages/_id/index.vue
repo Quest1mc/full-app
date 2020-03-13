@@ -1,13 +1,23 @@
 <template>
   <v-container v-if="portal">
     <v-row justify="center">
-      <v-col cols="12" xl="8">
+      <v-col cols="10">
         <portal-header :portal="portal" :settings="settings" />
+        <keywords :items="portal.profile.keywords" class="text-center mt-10" />
       </v-col>
     </v-row>
     <v-row justify="center">
-      <v-col cols="12" xl="8">
-        <component :is="pageType" :portal="portal" :settings="settings" />
+      <v-col cols="8">
+        <div
+          class="display-1 text-center mt-5"
+          style="line-height: 1.5em;"
+          v-text="portal.profile.description"
+        ></div>
+      </v-col>
+    </v-row>
+    <v-row justify="center">
+      <v-col cols="10">
+        <component class="mt-12" :is="pageType" :portal="portal" :settings="settings" />
         <div class="mt-12 text-center">
           <v-btn outlined x-large :to="`/${portal.site}/cms`">Edit</v-btn>
         </div>
@@ -20,6 +30,7 @@
 import Vue, { VueConstructor } from 'vue';
 
 import { Premium as PremiumPage, Basic as BasicPage } from '@/partials/page';
+import Keywords from '@/components/keywords';
 import PortalHeader from '@/components/portal-header';
 import { Portal, PortalSettings } from '@/types';
 
@@ -28,6 +39,7 @@ export default Vue.extend({
 
   components: {
     PortalHeader,
+    Keywords,
   },
 
   computed: {

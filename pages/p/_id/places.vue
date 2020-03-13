@@ -2,7 +2,7 @@
   <v-container>
     <div class="py-12 ml-12">
       <div class="display-2 font-weight-bold">Places</div>
-      <div class="headline font-weight-bold mt-3">
+      <div class="headline font-weight-normal mt-3">
         All places, locations, venues, bars, theaters that host and support our community.
       </div>
     </div>

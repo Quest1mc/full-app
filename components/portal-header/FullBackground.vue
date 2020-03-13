@@ -1,36 +1,30 @@
 <template>
-  <div>
-    <v-sheet class="portal-header--full-background" :elevation="flat ? 0 : 1">
-      <v-img
-        height="45vh"
-        cover
-        :src="image"
-        class="text-center align-center"
-        gradient="to left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)"
-      >
-        <v-avatar size="256" class="elevation-">
-          <v-img :src="avatar" />
-        </v-avatar>
+  <v-sheet class="portal-header--full-background" :elevation="flat ? 0 : 1">
+    <v-img
+      height="45vh"
+      cover
+      :src="image"
+      class="text-center align-center"
+      gradient="to left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)"
+    >
+      <v-avatar size="256" class="elevation-">
+        <v-img :src="avatar" />
+      </v-avatar>
 
-        <div class="white--text mt-5">
-          <div class="font-weight-bold ml-n12">heythis.is</div>
-          <div class="display-3 mt-2 font-weight-bold">{{ title }}</div>
-        </div>
-      </v-img>
-    </v-sheet>
-    <keywords :items="portal.profile.keywords" class="text-center mt-5" />
-  </div>
+      <div class="white--text mt-5">
+        <div class="font-weight-bold ml-n12">heythis.is</div>
+        <div class="display-3 mt-2 font-weight-bold">{{ title }}</div>
+      </div>
+    </v-img>
+  </v-sheet>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import { Portal, PortalSettings } from '@/types';
-import Keywords from '@/components/keywords';
 
 export default Vue.extend({
-  components: {
-    Keywords,
-  },
+  components: {},
 
   props: {
     portal: {

@@ -1,5 +1,7 @@
 <template>
-  <div class="mt-12">
+  <div>
+    <v-divider />
+    <div class="display-3 my-12 text-center font-weight-normal">Latest updates</div>
     <timeline :items="portal.cards" v-if="portal.cards.length" @select="selectItem" />
   </div>
 </template>

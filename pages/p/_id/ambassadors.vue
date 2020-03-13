@@ -2,7 +2,7 @@
   <v-container>
     <div class="py-12 ml-12">
       <div class="display-2 font-weight-bold">Ambassadors</div>
-      <div class="headline font-weight-bold mt-3">Ambassadors for our Portal</div>
+      <div class="headline font-weight-normal mt-3">Ambassadors for our Portal</div>
     </div>
 
     <ambassadors />

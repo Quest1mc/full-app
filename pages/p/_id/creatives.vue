@@ -2,7 +2,7 @@
   <v-container>
     <div class="py-12 ml-12">
       <div class="display-2 font-weight-bold">All creatives</div>
-      <div class="headline font-weight-bold mt-3">
+      <div class="headline font-weight-normal mt-3">
         Browse all our creatives who create our vibrant arts and culture.
       </div>
     </div>

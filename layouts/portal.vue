@@ -1,5 +1,5 @@
 <template>
-  <v-app :style="{ background: $vuetify.theme.themes[theme].background }">
+  <v-app :style="{ background: $vuetify.theme.themes[theme].background.portal }">
     <portal-navigation-bar />
     <v-content>
       <nuxt />

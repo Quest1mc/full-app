@@ -1,33 +1,26 @@
 <template>
-  <div>
-    <v-sheet
-      class="portal-header--text-only justify-center d-flex flex-column py-8 pr-8"
-      :elevation="flat ? 0 : 1"
-      min-height="300"
-    >
-      <div style="padding-left: 100px;">
-        <div class="font-weight-bold">heythis.is</div>
-        <div class="display-3 ml-n8 my-4 font-weight-bold">{{ title }}</div>
-        <div style="max-width: 650px;">
-          <span class="headline font-weight-bold" v-text="firstWord"></span>
-          <span class="ml-1" v-text="description"></span>
-        </div>
+  <v-sheet
+    class="portal-header--text-only justify-center d-flex flex-column py-8 pr-8"
+    :elevation="flat ? 0 : 1"
+    min-height="300"
+  >
+    <div style="padding-left: 100px;">
+      <div class="font-weight-bold">heythis.is</div>
+      <div class="display-3 ml-n8 my-4 font-weight-bold">{{ title }}</div>
+      <div style="max-width: 650px;">
+        <span class="headline font-weight-bold" v-text="firstWord"></span>
+        <span class="ml-1" v-text="description"></span>
       </div>
-    </v-sheet>
-
-    <keywords :items="portal.profile.keywords" class="text-center mt-5" />
-  </div>
+    </div>
+  </v-sheet>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import { Portal, PortalSettings } from '@/types';
-import Keywords from '@/components/keywords';
 
 export default Vue.extend({
-  components: {
-    Keywords,
-  },
+  components: {},
 
   props: {
     portal: {

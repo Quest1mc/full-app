@@ -1,5 +1,5 @@
 <template>
-  <basic-grid :items="users" cols="12" :md="4" :lg="4" :xl="4" :sm="6">
+  <basic-grid :items="users" cols="12" :md="4" :lg="4" :xl="3" :sm="6">
     <template v-slot:item="{ item }">
       <ambassador-card :user="item" style="min-height: 100%;" />
     </template>
