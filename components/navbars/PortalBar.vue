@@ -2,7 +2,7 @@
   <v-app-bar inverted-scroll app dense clipped-right color="white" class="flex-grow-0">
     <v-container>
       <v-row>
-        <v-col cols="12" xl="10" class="d-flex align-center">
+        <v-col cols="12" class="d-flex align-center">
           <router-link to="/">
             <v-img
               alt="heythis.is Logo"

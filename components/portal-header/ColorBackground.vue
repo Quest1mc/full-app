@@ -3,7 +3,8 @@
     <v-row no-gutters>
       <v-col cols="6" offset="6">
         <v-img
-          height="650"
+          height="50vh"
+          max-height="650"
           cover
           :src="image"
           gradient="to left, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)"

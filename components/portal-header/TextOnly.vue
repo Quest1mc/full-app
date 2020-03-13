@@ -2,12 +2,12 @@
   <v-sheet
     class="portal-header--text-only justify-center d-flex flex-column py-8 pr-8"
     :elevation="flat ? 0 : 1"
-    min-height="300"
+    min-height="35vh"
   >
-    <div style="padding-left: 100px;">
+    <div style="padding-left: 10%;">
       <div class="font-weight-bold">heythis.is</div>
       <div class="display-3 ml-n8 my-4 font-weight-bold">{{ title }}</div>
-      <div style="max-width: 650px;">
+      <div style="max-width: 65%;">
         <span class="headline font-weight-bold" v-text="firstWord"></span>
         <span class="ml-1" v-text="description"></span>
       </div>

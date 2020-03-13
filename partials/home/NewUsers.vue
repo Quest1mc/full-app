@@ -4,7 +4,7 @@
       <user-card-skeleton />
     </v-col>
   </v-row>
-  <v-row v-else>
+  <v-row v-else justify="center">
     <v-col cols="6" sm="4" md="3" xl="2" v-for="user in users" :key="user.site">
       <user-card :user="user" />
     </v-col>
