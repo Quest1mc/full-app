@@ -1,12 +1,10 @@
 <template>
   <component
+    v-bind="$attrs"
     @click="$emit('click', $event)"
     class="content-card"
     :is="contentType"
     :item="item"
-    :clipped="clipped"
-    :hide-details="hideDetails"
-    :aspect-ratio="aspectRatio"
   />
 </template>
 
@@ -22,21 +20,6 @@ export default Vue.extend({
   props: {
     item: {
       type: Object as () => ContentItem,
-    },
-
-    clipped: {
-      type: Boolean,
-      default: true,
-    },
-
-    hideDetails: {
-      type: Boolean,
-      default: false,
-    },
-
-    aspectRatio: {
-      type: Number,
-      default: undefined,
     },
   },
 

@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center">
     <v-col cols="12" sm="6" v-for="video in videos" :key="video.id">
-      <content-card :item="video" hide-details />
+      <content-card :item="video" hide-details elevation="1" />
     </v-col>
   </v-row>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <base-card class="content-card--youtube">
+  <base-card class="content-card--youtube" v-bind="$attrs">
     <template v-slot:icon>
       <v-icon color="white">mdi-youtube</v-icon>
     </template>
@@ -27,6 +27,7 @@ export default Vue.extend({
 
     clipped: {
       type: Boolean,
+      default: true,
     },
 
     hideDetails: {

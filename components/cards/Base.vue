@@ -1,5 +1,5 @@
 <template>
-  <v-sheet style="position: relative;" elevation="1">
+  <v-sheet style="position: relative;" v-bind="$attrs">
     <slot />
     <div
       v-if="$slots['icon']"
@@ -16,11 +16,6 @@ import Vue from 'vue';
 
 export default Vue.extend({
   props: {
-    aspectRatio: {
-      type: Number,
-      default: 1,
-    },
-
     icon: {
       type: String,
       default: null,

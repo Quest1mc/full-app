@@ -1,7 +1,7 @@
 <template>
   <justified-grid :items="items" :sm="6" :md="4" :lg="4" :xl="4">
     <template v-slot:item="{ item }">
-      <content-card :aspect-ratio="3 / 2" :item="item" hide-details />
+      <content-card :aspect-ratio="3 / 2" :item="item" hide-details tile />
     </template>
   </justified-grid>
 </template>

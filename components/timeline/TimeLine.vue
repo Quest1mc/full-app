@@ -3,7 +3,12 @@
     <channels v-model="channel" :channels="channels" />
     <basic-grid class="mt-12" :items="filteredItems" @select="$emit('select', $event)">
       <template v-slot:item="{ item }">
-        <content-card :item="item" style="height: 100%; min-height: 100%;" />
+        <content-card
+          :item="item"
+          style="height: 100%; min-height: 100%;"
+          elevation="1"
+          aspect-ratio="1"
+        />
       </template>
     </basic-grid>
   </div>

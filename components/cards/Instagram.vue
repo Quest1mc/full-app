@@ -1,5 +1,5 @@
 <template>
-  <base-card class="content-card--instagram" style="overflow: hidden;">
+  <base-card class="content-card--instagram" style="overflow: hidden;" v-bind="$attrs">
     <template v-slot:icon>
       <v-icon color="white">mdi-instagram</v-icon>
     </template>
@@ -30,6 +30,7 @@ export default Vue.extend({
 
     clipped: {
       type: Boolean,
+      default: true,
     },
 
     hideDetails: {
