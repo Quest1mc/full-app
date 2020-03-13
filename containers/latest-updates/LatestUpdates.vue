@@ -1,5 +1,5 @@
 <template>
-  <justified-grid :items="items" :sm="3" :md="4" :lg="4" :xl="4">
+  <justified-grid :items="items" :sm="6" :md="4" :lg="4" :xl="4">
     <template v-slot:item="{ item }">
       <content-card :aspect-ratio="3 / 2" :item="item" hide-details />
     </template>
@@ -24,7 +24,7 @@ export default Vue.extend({
     },
 
     items(): ContentItem[] {
-      return this.portal.cards;
+      return this.portal.cards.slice(0, 6);
     },
   },
 });
