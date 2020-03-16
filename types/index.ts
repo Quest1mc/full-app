@@ -43,7 +43,7 @@ export type Portal = {
   cards: ContentItem[];
 };
 
-export type ContentItemType = 'Video' | 'Image';
+export type ContentItemType = 'Video' | 'Image' | 'Carousel';
 
 export type EventItem = {
   title: string;

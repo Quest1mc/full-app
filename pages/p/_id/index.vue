@@ -7,7 +7,7 @@
     </v-row>
     <v-row justify="center">
       <v-col cols="12" xl="8">
-        <masonry-grid :items="portal.cards">
+        <masonry-grid :items="portal.cards" @select="selectItem">
           <template v-slot:item="{ item }">
             <content-card :item="item" :clipped="false" class="mb-5" elevation="1" />
           </template>
@@ -21,7 +21,7 @@
 import Vue from 'vue';
 
 import PortalHeader from '@/components/portal-header';
-import { Portal, PortalSettings } from '@/types';
+import { Portal, PortalSettings, ContentItem } from '@/types';
 import { Masonry as MasonryGrid } from '@/components/grids';
 import ContentCard from '@/components/cards/Content.vue';
 
@@ -47,6 +47,12 @@ export default Vue.extend({
   async fetch({ store, params }) {
     await store.dispatch('portalSettings/fetch:settings', params.id);
     await store.dispatch('portals/fetch:portal', params.id);
+  },
+
+  methods: {
+    selectItem(item: ContentItem) {
+      this.$store.commit('media/set:selected', item);
+    },
   },
 });
 </script>

@@ -45,7 +45,7 @@ export default Vue.extend({
     },
 
     aspectRatio: {
-      type: Number,
+      type: [Number, String],
     },
 
     quality: {

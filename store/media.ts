@@ -29,8 +29,6 @@ const mod: AsyncModule<MediaState, any> = {
     ['set:selected'](state, item: Nullable<ContentItem>) {
       state.selected = item;
       state.isVisible = !!item;
-
-      console.log('set selected', state);
     },
 
     ['set:visibility'](state, visible: boolean) {

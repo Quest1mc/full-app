@@ -2,34 +2,37 @@
   <video ref="videoPlayer" class="video-js" style="width: 100%; height: auto;"></video>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
+import { VideoJsPlayerOptions, VideoJsPlayer } from 'video.js';
+import { Nullable } from '@/types';
 
-export default {
-  name: 'VideoPlayer',
+export default Vue.extend({
   props: {
     options: {
-      type: Object,
-      default() {
-        return {};
-      },
+      type: Object as () => VideoJsPlayerOptions,
+      default: () => ({}),
     },
   },
+
   data() {
     return {
-      player: null,
+      player: null as Nullable<VideoJsPlayer>,
     };
   },
+
   mounted() {
     this.player = videojs(this.$refs.videoPlayer, this.options, function onPlayerReady() {
       // console.log('onPlayerReady', this);
     });
   },
+
   beforeDestroy() {
     if (this.player) {
       this.player.dispose();
     }
   },
-};
+});
 </script>
