@@ -24,6 +24,7 @@ export default Vue.extend({
   },
 
   mounted() {
+    console.log(this.options);
     this.player = videojs(this.$refs.videoPlayer, this.options, function onPlayerReady() {
       // console.log('onPlayerReady', this);
     });

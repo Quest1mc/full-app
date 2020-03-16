@@ -1,5 +1,5 @@
 <template>
-  <v-img v-bind="$attrs" cover width="100%" height="auto" :src="source" />
+  <v-img v-bind="$attrs" cover width="100%" height="auto" :lazy-src="lazy" :src="source" />
 </template>
 
 <script lang="ts">
@@ -14,6 +14,15 @@ export default Vue.extend({
   },
 
   computed: {
+    lazy(): Nullable<string> {
+      switch (this.item.channel) {
+        case 'Instagram':
+          return this.item.metadata.images.thumbnail.url;
+        default:
+          return null;
+      }
+    },
+
     source(): Nullable<string> {
       switch (this.item.channel) {
         case 'Instagram':

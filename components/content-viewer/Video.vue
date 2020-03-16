@@ -1,5 +1,6 @@
 <template>
-  <video-player :options="videoOptions" width="100%" />
+  <youtube player-width="100%" v-if="item.channel === 'YouTube'" :video-id="item.id" />
+  <video-player v-else :options="videoOptions" />
 </template>
 
 <script lang="ts">
@@ -30,8 +31,6 @@ export default Vue.extend({
     },
 
     videoOptions(): VideoJsPlayerOptions {
-      console.log(this.source);
-
       return {
         sources: [
           {
@@ -40,7 +39,7 @@ export default Vue.extend({
           },
         ],
         controls: true,
-        autoplay: true,
+        autoplay: false,
         preload: 'auto',
       };
     },
