@@ -4,6 +4,9 @@
     <v-content>
       <nuxt />
     </v-content>
+    <v-footer>
+      Hello
+    </v-footer>
     <!-- <media-drawer /> -->
   </v-app>
 </template>
