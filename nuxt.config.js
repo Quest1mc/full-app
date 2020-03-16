@@ -30,6 +30,7 @@ export default {
    */
   plugins: [
     { src: '~/plugins/lineclamp', mode: 'client' },
+    { src: '~/plugins/moment' },
     { src: '~/plugins/youtube', mode: 'client' },
     { src: '~/plugins/vue-masonry', mode: 'client', ssr: false },
   ],

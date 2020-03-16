@@ -11,7 +11,13 @@
     style="max-width: 40vw;"
   >
     <template v-if="item">
-      <content-viewer :item="item" />
+      <div class="d-flex pa-4">
+        <span class="title" v-text="date" />
+      </div>
+
+      <div class="px-4">
+        <content-viewer :item="item" />
+      </div>
 
       <div class="pa-4">
         <div class="title" v-if="item.title" v-text="item.title" />
@@ -21,6 +27,11 @@
           v-text="item.description"
         />
       </div>
+
+      <div class="pa-4 d-flex justify-end align-center">
+        <span class="title mr-4" v-html="item.site"></span>
+        <v-avatar size="64" class="elevation-1"><v-img :src="item.avatar"/></v-avatar>
+      </div>
     </template>
   </v-navigation-drawer>
 </template>
@@ -29,6 +40,7 @@
 import Vue from 'vue';
 import { ContentItem, Nullable } from '@/types';
 import ContentViewer from '@/components/content-viewer';
+import moment from 'moment';
 
 export default Vue.extend({
   props: {
@@ -45,6 +57,18 @@ export default Vue.extend({
 
   components: {
     ContentViewer,
+  },
+
+  computed: {
+    date(): string {
+      return moment(this.item!.date).calendar();
+    },
+  },
+
+  watch: {
+    item(val: ContentItem) {
+      console.log(val);
+    },
   },
 });
 </script>
