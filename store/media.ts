@@ -32,7 +32,11 @@ const mod: AsyncModule<MediaState, any> = {
     },
 
     ['set:visibility'](state, visible: boolean) {
-      state.isVisible = !!visible;
+      state.isVisible = visible;
+
+      if (!visible) {
+        state.selected = null;
+      }
     },
   },
 

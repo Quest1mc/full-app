@@ -1,5 +1,10 @@
 <template>
-  <youtube player-width="100%" v-if="item.channel === 'YouTube'" :video-id="item.id" />
+  <youtube
+    player-width="100%"
+    v-if="item.channel === 'YouTube'"
+    :video-id="item.id"
+    :player-vars="{ autoplay: 1 }"
+  />
   <video-player v-else :options="videoOptions" />
 </template>
 

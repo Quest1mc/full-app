@@ -13,7 +13,7 @@
     <template v-if="item">
       <content-viewer :item="item" />
 
-      <div class="pa-3">
+      <div class="pa-4">
         <div class="title" v-if="item.title" v-text="item.title" />
         <div
           class="body-1 mt-3"
