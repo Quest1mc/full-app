@@ -29,7 +29,7 @@ export default Vue.extend({
     source(): string {
       switch (this.item.channel) {
         case 'Instagram':
-          return this.item.metadata.images.standard_resolution.url;
+          return this.item.metadata.videos.standard_resolution.url;
         default:
           return '';
       }
@@ -43,8 +43,10 @@ export default Vue.extend({
             type: 'video/mp4',
           },
         ],
+        poster: this.item.metadata.images.thumbnail.url,
         controls: true,
-        autoplay: false,
+        fluid: true,
+        autoplay: true,
         preload: 'auto',
       };
     },

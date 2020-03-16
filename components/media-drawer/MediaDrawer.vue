@@ -4,7 +4,6 @@
     @input="$emit('input', $event)"
     right
     app
-    bottom
     width="100%"
     temporary
     fixed
