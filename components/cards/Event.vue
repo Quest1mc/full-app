@@ -2,7 +2,7 @@
   <v-sheet v-bind="$attrs" class="d-flex">
     <v-img
       min-width="30%"
-      aspect-ratio="1 / 2"
+      :aspect-ratio="2"
       max-width="30%"
       eager
       :lazy-src="item.image"

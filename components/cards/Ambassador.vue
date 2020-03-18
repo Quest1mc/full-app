@@ -1,6 +1,6 @@
 <template>
   <v-sheet class="ambassador px-8 pb-4 text-center" color="transparent">
-    <v-responsive aspect-ratio="1">
+    <v-responsive :aspect-ratio="1">
       <v-avatar width="100%" height="100%" style="border: solid 4px white;">
         <v-img :src="user.avatar" />
       </v-avatar>

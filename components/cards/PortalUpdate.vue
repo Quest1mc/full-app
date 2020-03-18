@@ -1,48 +1,22 @@
 <template>
   <v-sheet v-bind="$attrs" style="position: relative;">
-    <v-img
-      :aspect-ratio="2"
-      :lazy-src="item.image"
-      :src="item.image"
-      cover
-      class="align-end"
-      style="overflow: visible;"
-    >
-      <div
-        class="d-flex px-2 justify-space-between"
-        style="transform: translateY(50%); width: 100%;"
-      >
-        <div
-          class="d-flex black white--text text-uppercase"
-          style="border: 2px solid white !important;"
-        >
-          <div class="body-2 font-weight-bold">
-            <div
-              style="transform: rotate(-90deg); transform-origin: 50% 60%;"
-              class="px-1 ml-1 py-2"
-            >
-              {{ item.date.month }}
-            </div>
-          </div>
+    <v-img :aspect-ratio="1.5" :lazy-src="item.image" :src="item.image" cover> </v-img>
 
-          <div class="headline font-weight-bold px-4 py-2" style="border-left: 2px solid white;">
-            {{ item.date.day }}
-          </div>
-        </div>
+    <div class="mt-4 pa-4">
+      <div class="display-2" v-text="item.title" />
+      <div class="subtitle-1 mt-3" v-text="item.description" />
+
+      <div class="d-flex justify-space-between mt-4 align-center">
+        <div v-text="item.date.date" class="title" />
 
         <div class="d-flex black white--text" style="border: 2px solid white !important;">
-          <v-img :src="item.avatar" width="48" height="48" />
+          <v-img :src="item.avatar" width="32" height="32" />
 
-          <div class="headline font-weight-bold px-4 py-2" style="border-left: 2px solid white;">
+          <div class="title px-4" style="border-left: 2px solid white;">
             {{ item.location }}
           </div>
         </div>
       </div>
-    </v-img>
-
-    <div class="mt-12 pa-4">
-      <div class="display-2" v-text="item.title" />
-      <div class="subtitle-1 mt-3" v-text="item.description" />
     </div>
 
     <div style="position: absolute; top: 0; right: 0;" class="d-flex">

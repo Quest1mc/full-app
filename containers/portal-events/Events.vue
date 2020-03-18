@@ -39,6 +39,7 @@ export default Vue.extend({
           title: 'Arts Event',
           location: 'Museum X',
           channel: 'Facebook',
+          type: 'arts',
           image: 'https://i.picsum.photos/id/101/2621/1747.jpg',
           avatar: 'https://i.pravatar.cc/150?img=3',
           description:
@@ -54,6 +55,7 @@ export default Vue.extend({
           title: 'Fashion...',
           location: 'Gallery X',
           channel: 'Facebook',
+          type: 'fashion',
           image: 'https://i.picsum.photos/id/101/2621/1747.jpg',
           avatar: 'https://i.pravatar.cc/150?img=3',
           description:
@@ -69,6 +71,7 @@ export default Vue.extend({
           title: 'Arts Event',
           location: 'Stage X',
           channel: 'Facebook',
+          type: 'music',
           image: 'https://i.picsum.photos/id/1079/2621/1747.jpg',
           avatar: 'https://i.pravatar.cc/150?img=3',
           description:
@@ -84,6 +87,7 @@ export default Vue.extend({
           title: 'Theater...',
           location: 'Theater 1',
           channel: 'Facebook',
+          type: 'performing arts',
           image: 'https://i.picsum.photos/id/1027/2621/1747.jpg',
           avatar: 'https://i.pravatar.cc/150?img=3',
           description:
@@ -99,6 +103,7 @@ export default Vue.extend({
           title: 'Dance...',
           location: 'Theater 2',
           channel: 'Facebook',
+          type: 'dance',
           image: 'https://i.picsum.photos/id/1025/2621/1747.jpg',
           avatar: 'https://i.pravatar.cc/150?img=3',
           description:

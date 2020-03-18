@@ -1,6 +1,6 @@
 <template>
   <v-sheet class="creative" elevation="2" dark>
-    <v-responsive aspect-ratio="1">
+    <v-responsive :aspect-ratio="1">
       <v-img :src="user.avatar" width="100%" height="100%" />
     </v-responsive>
 
