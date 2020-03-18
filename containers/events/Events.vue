@@ -9,7 +9,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import EventCard from '@/components/cards/Event.vue';
-import { EventItem } from '../../types';
+import { EventItem } from '@/types';
 
 export default Vue.extend({
   components: {

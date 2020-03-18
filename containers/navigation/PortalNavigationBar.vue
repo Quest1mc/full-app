@@ -1,6 +1,7 @@
 <template>
   <v-app-bar
     shrink-on-scroll
+    v-if="portal"
     app
     fixed
     prominent

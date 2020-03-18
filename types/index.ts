@@ -47,7 +47,10 @@ export type ContentItemType = 'Video' | 'Image' | 'Carousel';
 
 export type EventItem = {
   title: string;
+  avatar: string;
+  channel: ContentChannel;
   description: string;
+  type: string;
   image: string;
   location: string;
   date: any;
