@@ -63,12 +63,6 @@ export default Vue.extend({
       return moment(this.item!.date).calendar();
     },
   },
-
-  watch: {
-    item(val: ContentItem) {
-      console.log(val);
-    },
-  },
 });
 </script>
 
