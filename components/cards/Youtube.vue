@@ -6,8 +6,7 @@
 
     <v-img
       width="100%"
-      height="auto"
-      cover
+      min-height="100"
       :aspect-ratio="aspectRatio"
       :lazy-src="thumbs[0]"
       :src="thumbs[quality]"

@@ -5,9 +5,8 @@
     </template>
 
     <v-img
-      cover
       width="100%"
-      height="auto"
+      min-height="100"
       :aspect-ratio="aspectRatio"
       :lazy-src="sources[0]"
       :src="sources[quality]"

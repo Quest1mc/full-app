@@ -19,14 +19,11 @@
       </div>
     </div>
 
-    <div style="position: absolute; top: 0; right: 0;" class="d-flex">
-      <div
-        class="elevation-1 px-2 py-1 white--text"
-        style="height: 100%; background-color: rgba(0,0,0,0.1)"
-      >
+    <div style="position: absolute; top: 0; right: 0;" class="d-flex elevation-1">
+      <div class="px-2 py-1 white--text" style="height: 100%; background-color: rgba(0,0,0,0.1)">
         {{ item.type }}
       </div>
-      <div class="elevation-1 pa-1 black" style="height: 100%;">
+      <div class="pa-1 black" style="height: 100%;">
         <v-icon color="white" v-text="icon" />
       </div>
     </div>

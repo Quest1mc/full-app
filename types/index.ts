@@ -71,6 +71,10 @@ export type ContentItem = {
   metadata: ContentMetaData;
 };
 
+export type CarouselItem = {
+  url: string;
+};
+
 export type ContentMetaData = {
   application: {
     name: string;
@@ -78,6 +82,7 @@ export type ContentMetaData = {
   attachments: {
     data: ContentAttachment[];
   };
+  carousel: CarouselItem[];
   thumbnails: any;
   images: any;
   videos: any;
