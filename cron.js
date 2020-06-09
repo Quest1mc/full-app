@@ -2,11 +2,25 @@ const { request } = require('graphql-request');
 const cron = require('node-cron');
 const User = require('./models/User');
 
+// ----------------------Express cronjob  starts ------------------------//
+// cron.schedule('59 23 * * * ', () => {
+//   console.log('if you see this you know that the cron is running');
+//   syncContents();
+// });
+// app.listen(3128);
+// ----------------------Express cronjob ends ------------------------//
+
+
 /*
 TODO
 get all users through mongoose
 get them into an array
 user foreach to iterate over the array updating / syncing content for each user
+
+for (var key in obj) {
+   if (!obj.hasOwnProperty(key)) continue;
+   console.log(key, obj[key]);
+}
 
 get an array of all the users
 for (var key in obj) {

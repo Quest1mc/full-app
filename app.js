@@ -16,6 +16,7 @@ const session = require('express-session');
 // const request = require('request');
 const request = require('request-promise');
 const bodyParser = require('body-parser');
+const xhub = require('express-x-hub');
 const logger = require('morgan');
 const chalk = require('chalk');
 const errorHandler = require('errorhandler');
@@ -236,7 +237,14 @@ app.get('/account/unlink/:provider',
  */
 app.get('/api', apiController.getApi);
 
-app.get('/api/facebook',
+
+// passportConfig.isAuthenticated,
+// passportConfig.isAuthorized,
+// apiController.getFacebook
+// );
+// echo/ verifytoken  back token heythis2020june
+
+app.get('/api/webhooks',
   passportConfig.isAuthenticated,
   passportConfig.isAuthorized,
   apiController.getFacebook);
@@ -912,13 +920,19 @@ app.use('/graphql',
   }));
 
 // ----------------------Express config to be adjusted after graphql works------------------------//
-// ----------------------Express cronjob  starts ------------------------//
-cron.schedule('59 23 * * * ', () => {
-  console.log('if you see this you know that the cron is running');
-  syncContents();
+const token = process.env.FBWEBHOOKSTOKEN || 'token';
+
+app.get(['/api/facebook', '/api/instagram'], (req, res) => {
+  if (
+    req.query['hub.mode'] === 'subscribe'
+    && req.query['hub.verify_token'] === token
+  ) {
+    res.send(req.query['hub.challenge']);
+    console.log(hub.challenge);
+  } else {
+    res.sendStatus(400);
+  }
 });
-app.listen(3128);
-// ----------------------Express cronjob ends ------------------------//
 
 /**
  * Error Handler.
@@ -943,5 +957,53 @@ app.listen(app.get('port'), () => {
     app.get('env'));
   console.log('  Press CTRL-C to stop\n');
 });
+app.use(xhub({ algorithm: 'sha1', secret: process.env.APP_SECRET }));
+app.use(bodyParser.json());
+
+
+// eslint-disable-next-line camelcase
+const receivedUpdates = [];
+
+app.get('/webhooks', (req, res) => {
+  console.log(req);
+  res.send(`<pre>${JSON.stringify(receivedUpdates, null, 2)}</pre>`);
+});
+
+app.get(['/webhooks/facebook', '/webhooks/instagram'], (req, res) => {
+  if (
+    req.query['hub.mode'] === 'subscribe'
+    && req.query['hub.verify_token'] === token
+  ) {
+    res.send(req.query['hub.challenge']);
+    // console.log(req.query['hub.challenge']);
+  } else {
+    res.sendStatus(400);
+  }
+});
+
+app.post('/webhooks/facebook', (req, res) => {
+  console.log('Facebook request body:', req.body);
+
+  if (!req.isXHubValid()) {
+    console.log('Warning - request header X-Hub-Signature not present or invalid');
+    res.sendStatus(401);
+    return;
+  }
+
+  console.log('request header X-Hub-Signature validated');
+  // Process the Facebook updates here
+  received_updates.unshift(req.body);
+  res.sendStatus(200);
+});
+
+app.post('/webhooks/instagram', (req, res) => {
+  console.log('Instagram request body:');
+  console.log(req.body);
+  // Process the Instagram updates here
+  received_updates.unshift(req.body);
+  res.sendStatus(200);
+});
+
+app.listen();
 
 module.exports = app;
