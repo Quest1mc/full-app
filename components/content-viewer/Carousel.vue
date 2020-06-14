@@ -8,7 +8,7 @@
       transition="fade-transition"
     ></v-carousel-item>
   </v-carousel>
-  <v-img v-else v-bind="$attrs" cover width="100%" height="auto" :lazy-src="lazy" :src="source" />
+  <v-img v-else v-bind="$attrs" cover width="100%" :lazy-src="lazy" :src="source" />
 </template>
 
 <script lang="ts">

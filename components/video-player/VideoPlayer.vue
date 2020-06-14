@@ -4,9 +4,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import videojs from 'video.js';
+import videojs, { VideoJsPlayerOptions, VideoJsPlayer } from 'video.js';
 import 'video.js/dist/video-js.css';
-import { VideoJsPlayerOptions, VideoJsPlayer } from 'video.js';
 import { Nullable } from '@/types';
 
 export default Vue.extend({
@@ -25,7 +24,7 @@ export default Vue.extend({
 
   mounted() {
     console.log(this.options);
-    this.player = videojs(this.$refs.videoPlayer, this.options, function onPlayerReady() {
+    this.player = videojs(this.$refs.videoPlayer, this.options, () => {
       // console.log('onPlayerReady', this);
     });
   },

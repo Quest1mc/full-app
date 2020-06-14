@@ -1,5 +1,39 @@
 export type UserType = 'free' | 'premium';
 
+export type OAuthTokenKind = 'google' | 'instagram' | 'facebook' | 'twitter';
+
+export type CreateUser = {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
+
+export type SignInUser = {
+  email: string;
+  password: string;
+};
+
+export type OAuthToken = {
+  id: string;
+  kind: OAuthTokenKind;
+  accessTokenExpires: string;
+  refreshToken: string;
+};
+
+export type SocialUser = {
+  profile: {
+    name: string;
+    picture: string;
+  };
+  tokens: OAuthToken[];
+  _id: string;
+  email: string;
+  google: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 export type UserProfile = {
   firstName: string;
   lastName: string;
@@ -90,6 +124,13 @@ export type ContentMetaData = {
 
 export type ContentAttachment = {
   type: string;
+};
+
+export type Channel = {
+  name: string;
+  icon: string;
+  color: string;
+  value: ContentChannel;
 };
 
 export type ContentChannel = 'Any' | 'YouTube' | 'Facebook' | 'Instagram' | 'Twitter';

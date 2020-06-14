@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import { AsyncModule, wrapModule, module } from 'vuex-async-mutations';
 import { ContentItem, Nullable } from '@/types';
 

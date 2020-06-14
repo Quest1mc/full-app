@@ -11,10 +11,10 @@
 <script lang="ts">
 import Vue, { VueConstructor } from 'vue';
 
+import { Nullable, Portal, PortalSettings } from '@/types';
 import TextOnly from './TextOnly.vue';
 import FullBackground from './FullBackground.vue';
 import ColorBackground from './ColorBackground.vue';
-import { Nullable, Portal, PortalSettings } from '@/types';
 
 export default Vue.extend({
   props: {

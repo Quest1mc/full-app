@@ -12,8 +12,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import BaseCard from './Base.vue';
 import { UserProfile } from '@/types';
+import BaseCard from './Base.vue';
 
 export default Vue.extend({
   props: {

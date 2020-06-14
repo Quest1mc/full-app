@@ -55,6 +55,7 @@ export default {
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
     'nuxt-vuex-router-sync',
+    '@nuxtjs/apollo',
   ],
   /*
    ** Axios module configuration
@@ -77,6 +78,16 @@ export default {
     },
     customVariables: ['~/assets/variables.scss'],
   },
+
+  apollo: {
+    clientConfigs: {
+      default: {
+        httpEndpoint: 'http://localhost:8080/graphql',
+        browserHttpEndpoint: '/graphql',
+      },
+    },
+  },
+
   /*
    ** Build configuration
    */
@@ -84,6 +95,19 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {},
+    build: {
+      extend(config, { isDev, isClient }) {
+        // ..
+        config.module.rules.push({
+          test: /\.(graphql|gql)$/,
+          exclude: /node_modules/,
+          loader: 'graphql-tag/loader',
+        });
+        // Sets webpack's mode to development if `isDev` is true.
+        if (isDev) {
+          config.mode = 'development';
+        }
+      },
+    },
   },
 };

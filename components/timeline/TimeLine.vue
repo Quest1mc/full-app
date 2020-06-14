@@ -17,11 +17,11 @@
 <script lang="ts">
 import Vue from 'vue';
 
-import Channels from './Channels.vue';
 import { ContentItem, ContentChannel } from '@/types';
 
 import BasicGrid from '@/components/grids/Basic.vue';
 import ContentCard from '@/components/cards/Content.vue';
+import Channels from './Channels.vue';
 
 export default Vue.extend({
   props: {

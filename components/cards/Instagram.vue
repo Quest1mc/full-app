@@ -23,10 +23,9 @@
 import Vue from 'vue';
 import { ContentItem } from '@/types';
 
-import BaseCard from './Base.vue';
-
 import { VideoJsPlayerOptions } from 'video.js';
 import moment from 'moment';
+import BaseCard from './Base.vue';
 
 export default Vue.extend({
   props: {
