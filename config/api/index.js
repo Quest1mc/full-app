@@ -14,7 +14,7 @@ module.exports = (app) => {
 
   app.get('/auth/instagram', (req, res) => {
     const clientId = process.env.INSTAGRAM_ID;
-    const redirectUri = process.env.INSTAGRAM_ID_URI;
+    const redirectUri = `${process.env.BASE_URL}/auth/instagram/callback`;
     res.redirect(
       `https://api.instagram.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user_profile,user_media&response_type=code`,
     );
@@ -27,8 +27,6 @@ module.exports = (app) => {
     const clientSecret = process.env.INSTAGRAM_SECRET;
 
     console.log('this is the code ', code);
-    const redirectUri = process.env.INSTAGRAM_ID_URI;
-    const url = 'https://api.instagram.com/oauth/access_token';
 
     const body = {
       client_id: clientId,

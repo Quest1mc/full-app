@@ -62,7 +62,8 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: 'https://europe-west1-heythisis-api.cloudfunctions.net/api',
+    baseURL: '/',
+    browserBaseURL: '/',
   },
   /*
    ** vuetify module configuration
