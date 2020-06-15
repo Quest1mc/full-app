@@ -218,7 +218,7 @@ refresh.use('google', googleStrategyConfig);
 // passport.use(new InstagramStrategy({
 //   clientID: process.env.INSTAGRAM_ID,
 //   clientSecret: process.env.INSTAGRAM_SECRET,
-//   callbackURL: 'https://33a5a1bfd7c0.ngrok.io/auth/instagram/callback',
+//   callbackURL: 'https://1d55315506e3.ngrok.io/auth/instagram/callback',
 //   passReqToCallback: true
 // }, (req, accessToken, refreshToken, profile, done) => {
 //   if (req.user) {
