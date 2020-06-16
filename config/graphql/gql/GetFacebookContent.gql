@@ -1,5 +1,20 @@
-query facebookContentAll($id: String!) {
-  getFacebookPageContent(id: $id) {
+query facebookContentAll($id: String!, $token: String!) {
+  getFacebookPageContent(id: $id, token: $token) {
     id
+    description
+    published_posts {
+      data {
+        story
+        created_time
+        id
+      }
+    }
+    videos {
+      data {
+        id
+        updated_time
+        description
+      }
+    }
   }
 }

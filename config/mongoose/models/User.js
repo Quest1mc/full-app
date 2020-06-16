@@ -97,6 +97,7 @@ const userSchema = new Schema(
     pageContent: String,
     hyperlinks: String, // fb,youtube,insta
     pageBuilder: String,
+    selectedFacebookPage: String,
     facebookpages: [
       {
         name: String,

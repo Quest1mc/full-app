@@ -10,6 +10,8 @@ module.exports = new FacebookStrategy(
     passReqToCallback: true,
   },
   (req, accessToken, refreshToken, profile, done) => {
+    console.log(profile);
+
     if (req.user) {
       // console.log(accessToken);
       User.findOne({ facebook: profile.id }, (err, existingUser) => {

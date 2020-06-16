@@ -12,7 +12,7 @@ const PortalType = require('../types/PortalType');
 const KeywordType = require('../types/KeywordType');
 const InstagramType = require('../types/InstagramType');
 const youtubeVideo = require('../types/YoutubeVideo');
-const FacebookType = require('../types/FacebookType');
+const FacebookPagesType = require('../types/FacebookPagesType');
 const FacebookContentType = require('../types/FacebookPageContentType');
 
 module.exports = new GraphQLObjectType({
@@ -84,26 +84,59 @@ module.exports = new GraphQLObjectType({
         }),
     },
 
+    getFacebookPages: {
+      type: GraphQLList(FacebookPagesType),
+      description:
+        'Gets all the accounts we want from facebook once a user has granted permissions',
+      resolve: async (parent, args, request) => {
+        // AUTHENTICATION NOT REQUIRED FOR THESE ENDPOINTS
+
+        // const sessionId = request.session.passport.user;
+        // if (!sessionId) {
+        //   throw new Error('you are not logged in');
+        // }
+        // if (sessionId !== args.id && User.admin === false) {
+        //   throw new Error('you are not authorised');
+        // }
+        try {
+          // get user
+          const user = await User.findById(request.session.passport.user);
+          const { accessToken } = user.tokens.find((item) => item.kind === 'facebook');
+          const userId = user.facebook;
+          const getFBaccounts = `https://graph.facebook.com/${userId}/accounts?access_token=${accessToken}`;
+          console.log('this is the accesstoken', accessToken, userId);
+          // get pages
+          const fbResponse = await axios.get(getFBaccounts);
+
+          console.log(fbResponse.data.data);
+
+          // console.log('this is the saved content', user.facebookpages);
+          return fbResponse.data.data;
+        } catch (e) {
+          console.log(e);
+        }
+      },
+    },
+
     getFacebookPageContent: {
-      type: GraphQLList(FacebookContentType),
+      type: FacebookContentType,
       description: 'Gets all the content we want from facebook once a user has granted permissions',
       args: {
         id: { type: GraphQLString },
+        token: { type: GraphQLString },
       },
       resolve: async (parent, args, request) => {
         try {
-          const user = await User.findById(args.id);
-          // eslint-disable-next-line camelcase
-
-          const { accessToken } = user.tokens.find((item) => item.kind === 'facebook');
+          const accessToken = args.token;
 
           const fieldsToGet =
             'birthday,about,band_members,bio,connected_instagram_account,contact_address,cover,current_location,description,display_subtext,emails,engagement,fan_count,featured_video,founded,general_info,genre,global_brand_page_name,global_brand_root_id,hometown,instagram_business_account,is_community_page,is_owned,is_published,is_webhooks_subscribed,link,location,name,page_token,personal_info,personal_interests,phone,place_type,single_line_address,username,published_posts,videos';
           // eslint-disable-next-line camelcase
-          const getAccountContents = `https://graph.facebook.com/${user.facebookId}?fields=${fieldsToGet}&access_token=${accessToken}`;
+          const getAccountContents = `https://graph.facebook.com/${args.id}?fields=${fieldsToGet}&access_token=${accessToken}`;
           const fbpageContent = await axios.get(getAccountContents);
 
-          console.log(fbpageContent.data);
+          console.log(fbpageContent.data.published_posts);
+          console.log(fbpageContent.data.videos);
 
           return fbpageContent.data;
         } catch (e) {

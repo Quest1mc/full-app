@@ -1,0 +1,8 @@
+query facebookPagesAll {
+  getFacebookPages {
+    name
+    id
+    access_token
+    category
+  }
+}

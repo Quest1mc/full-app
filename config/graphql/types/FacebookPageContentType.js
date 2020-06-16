@@ -3,17 +3,49 @@ const {
   GraphQLInt,
   GraphQLString,
   GraphQLBoolean,
-  //   GraphQLList,
+  GraphQLList,
   //   GraphQLNonNull,
   GraphQLObjectType,
   //   GraphQLInputObjectType
 } = require('graphql');
 
+const VideoType = new GraphQLObjectType({
+  name: 'VideoType',
+  fields: () => ({
+    description: { type: GraphQLString },
+    updated_time: { type: GraphQLString },
+    id: { type: GraphQLString },
+  }),
+});
+
+const PostType = new GraphQLObjectType({
+  name: 'PostType',
+  fields: () => ({
+    story: { type: GraphQLString },
+    created_time: { type: GraphQLString },
+    id: { type: GraphQLString },
+  }),
+});
+
+const VideoContentType = new GraphQLObjectType({
+  name: 'VideoContentType',
+  fields: () => ({
+    data: { type: GraphQLList(VideoType) },
+  }),
+});
+
+const PostContentType = new GraphQLObjectType({
+  name: 'PostContentType',
+  fields: () => ({
+    data: { type: GraphQLList(PostType) },
+  }),
+});
+
 const FacebookPageContentType = new GraphQLObjectType({
   name: 'FacebookPageContent',
   description: 'this is the contents of the facebook page to be displayed in front end',
   fields: () => ({
-    id: { type: GraphQLInt },
+    id: { type: GraphQLString },
     description: { type: GraphQLString },
     birthday: { type: GraphQLString },
     about: { type: GraphQLString },
@@ -49,16 +81,13 @@ const FacebookPageContentType = new GraphQLObjectType({
     place_type: { type: GraphQLString },
     single_line_address: { type: GraphQLString },
     username: { type: GraphQLString },
-    published_posts: { type: GraphQLString },
-    // data: { type: GraphQLList(GraphQLObjectType) },
+    published_posts: { type: PostContentType },
+    // data: { type: GraphQLList(GraphQLString) },
     // paging: {
-    //   cursors: { type: GraphQLList(GraphQLObjectType) },
-    //   next: String
+    //   cursors: { type: GraphQLList(GraphQLString) },
+    //   next: String,
     // },
-    // videos: {
-    //   data: { type: GraphQLList(GraphQLObjectType) },
-    //   paging: { cursors: { type: GraphQLList(GraphQLObjectType) }, }
-    // },
+    videos: { type: VideoContentType },
   }),
 });
 
