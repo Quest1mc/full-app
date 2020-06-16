@@ -92,7 +92,7 @@ module.exports = (app) => {
         console.log('this is after push');
         // console.log('ACCESS_TOKEN', accessToken, typeof (response));
         user.save((err) => {
-          req.flash('info', { msg: 'Instagram account has been linked.' });
+          // req.flash('info', { msg: 'Instagram account has been linked.' });
           res.redirect('/');
         });
       });

@@ -64,6 +64,10 @@ export default {
   axios: {
     baseURL: '/',
     browserBaseURL: '/',
+    credentials: true,
+    init(axios) {
+      axios.defaults.withCredentials = true;
+    },
   },
   /*
    ** vuetify module configuration
