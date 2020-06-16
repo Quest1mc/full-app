@@ -1,8 +1,6 @@
 const { OAuth2Strategy: GoogleStrategy } = require('passport-google-oauth');
 const moment = require('moment');
-
 const User = require('../../mongoose/models/User');
-
 module.exports = new GoogleStrategy(
   {
     clientID: process.env.GOOGLE_ID,
@@ -28,16 +26,14 @@ module.exports = new GoogleStrategy(
               return done(err);
             }
             user.google = profile.id;
-            user.tokens = [
-              {
-                kind: 'google',
-                accessToken,
-                accessTokenExpires: moment()
-                  .add(params.expires_in, 'seconds')
-                  .format(),
-                refreshToken,
-              },
-            ];
+            user.tokens.push({
+              kind: 'google',
+              accessToken,
+              accessTokenExpires: moment()
+                .add(params.expires_in, 'seconds')
+                .format(),
+              refreshToken,
+            });
             user.data = profile;
             user.profile.name = user.profile.name || profile.displayName;
             user.profile.gender = user.profile.gender || profile._json.gender;
