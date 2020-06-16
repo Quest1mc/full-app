@@ -1,0 +1,5 @@
+query facebookContentAll($id: String!) {
+  getFacebookPageContent(id: $id) {
+    id
+  }
+}

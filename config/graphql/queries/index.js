@@ -7,11 +7,13 @@ const Portal = require('../../mongoose/models/Portal');
 const Keywords = require('../../mongoose/models/Keywords');
 
 // Types
-const UserType = require('../../graphql/types/UserType');
-const PortalType = require('../../graphql/types/PortalType');
-const KeywordType = require('../../graphql/types/KeywordType');
-const InstagramType = require('../../graphql/types/InstagramType');
-const youtubeVideo = require('../../graphql/types/YoutubeVideo');
+const UserType = require('../types/UserType');
+const PortalType = require('../types/PortalType');
+const KeywordType = require('../types/KeywordType');
+const InstagramType = require('../types/InstagramType');
+const youtubeVideo = require('../types/YoutubeVideo');
+const FacebookType = require('../types/FacebookType');
+const FacebookContentType = require('../types/FacebookPageContentType');
 
 module.exports = new GraphQLObjectType({
   name: 'Query',
@@ -82,15 +84,40 @@ module.exports = new GraphQLObjectType({
         }),
     },
 
+    getFacebookPageContent: {
+      type: GraphQLList(FacebookContentType),
+      description: 'Gets all the content we want from facebook once a user has granted permissions',
+      args: {
+        id: { type: GraphQLString },
+      },
+      resolve: async (parent, args, request) => {
+        try {
+          const user = await User.findById(args.id);
+          // eslint-disable-next-line camelcase
+
+          const { accessToken } = user.tokens.find((item) => item.kind === 'facebook');
+
+          const fieldsToGet =
+            'birthday,about,band_members,bio,connected_instagram_account,contact_address,cover,current_location,description,display_subtext,emails,engagement,fan_count,featured_video,founded,general_info,genre,global_brand_page_name,global_brand_root_id,hometown,instagram_business_account,is_community_page,is_owned,is_published,is_webhooks_subscribed,link,location,name,page_token,personal_info,personal_interests,phone,place_type,single_line_address,username,published_posts,videos';
+          // eslint-disable-next-line camelcase
+          const getAccountContents = `https://graph.facebook.com/${user.facebookId}?fields=${fieldsToGet}&access_token=${accessToken}`;
+          const fbpageContent = await axios.get(getAccountContents);
+
+          console.log(fbpageContent.data);
+
+          return fbpageContent.data;
+        } catch (e) {
+          console.log(e);
+        }
+      },
+    },
+
     getInstagramPageContent: {
       type: new GraphQLList(InstagramType),
       description:
         'Gets all the content we want from Instagram once a user has granted permissions',
       args: {
         id: { type: GraphQLString },
-        accessToken: { type: GraphQLString },
-        fanCount: { type: GraphQLString },
-        pageName: { type: GraphQLString },
       },
       resolve: async (parent, args, request) => {
         try {
@@ -105,7 +132,9 @@ module.exports = new GraphQLObjectType({
           // `https://graph.instagram.com/me/media?fields=${fieldsToGet}&access_token=${access_token}`
 
           const instaPageContent = await axios.get(getAccountContents);
-          return instaPageContent.data || user;
+
+          console.log(instaPageContent.data.media.data);
+          return instaPageContent.data.media.data;
         } catch (e) {
           console.log(e);
         }
@@ -117,19 +146,8 @@ module.exports = new GraphQLObjectType({
       description: 'A gets youtube video contents of a user',
       args: {
         id: { type: GraphQLString },
-        channelID: { type: GraphQLString },
-        uploadID: { type: GraphQLString },
       },
       resolve: async (parent, args, request) => {
-        // AUTHENTICATION NOT REQUIRED FOR THESE ENDPOINTS
-
-        // const sessionId = request.session.passport.user;
-        // if (!sessionId) {
-        //   throw new Error('you are not logged in');
-        // }
-        // if (sessionId !== args.id && User.admin === false) {
-        //   throw new Error('you are not authorised');
-        // }
         try {
           const user = await User.findById(args.id);
           console.log('next step is getchannel');
