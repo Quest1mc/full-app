@@ -9,7 +9,7 @@ const express = require('express');
 const cron = require('node-cron');
 // const router = express.Router();
 const https = require('https');
-// const http = require('http');
+const http = require('http');
 const ExpressGraphQL = require('express-graphql');
 const compression = require('compression');
 const session = require('express-session');
@@ -32,7 +32,7 @@ const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
 const multer = require('multer');
 const axios = require('axios');
-
+const pubSubHubbub = require('pubsubhub');
 
 const {
   GraphQLID,
@@ -73,6 +73,9 @@ const FacebookPageContentType = require('./graphql-types/FacebookPageContentType
 const InputKeywordType = require('./graphql-types/InputKeywordType');
 const InputTokenType = require('./graphql-types/InputTokenType');
 const youtubeVideo = require('./graphql-types/YoutubeVideo');
+
+// webhooks
+// const facebookwebhooks = require('./webhooks');
 const syncContents = require('./cron');
 
 
@@ -109,6 +112,31 @@ mongoose.connection.on('error', (err) => {
     chalk.red('✗'));
   process.exit();
 });
+
+// __________________________________pubsubhubstuff______________________________//
+// const options = {
+//   port: 1337,
+//   callbackUrl: '/auth/google/callback'
+// };
+
+// const pubSubSubscriber = (pubSubHubbub.createServer(options),
+// topic = `https://www.youtube.com/xml/feeds/videos.xml?channel_id=${channelID}`,
+// hub = 'http://pubsubhubbub.appspot.com/');
+
+// pubSubSubscriber.on('subscribe', (data) => {
+//   console.log(`${data.topic} subscribed`);
+// });
+
+// pubSubSubscriber.listen(port);
+
+// pubsub.on('listen', () => {
+//   pubSubSubscriber.subscribe(topic, hub, (err) => {
+//     if (err) {
+//       console.log('Failed subscribing');
+//     }
+//   });
+// });
+// _____________________________end of pubsubhubstuff____________________________//
 
 // ____________________express stuff _______________________________________________________________
 
@@ -783,6 +811,9 @@ const RootMutationType = new GraphQLObjectType({
           throw new Error('you are not authorised');
         }
         try {
+          // console.log('facebookwebhooks initiated');
+          // facebookwebhooks();
+          // console.log('facebookwebhooks is running ');
           console.log('next step is getcontent');
           const user = await User.findById(args.id);
           const { pageName } = args;
@@ -920,19 +951,19 @@ app.use('/graphql',
   }));
 
 // ----------------------Express config to be adjusted after graphql works------------------------//
-const token = process.env.FBWEBHOOKSTOKEN || 'token';
 
-app.get(['/api/facebook', '/api/instagram'], (req, res) => {
-  if (
-    req.query['hub.mode'] === 'subscribe'
-    && req.query['hub.verify_token'] === token
-  ) {
-    res.send(req.query['hub.challenge']);
-    console.log(hub.challenge);
-  } else {
-    res.sendStatus(400);
-  }
-});
+
+// app.get(['/api/facebook', '/api/instagram'], (req, res) => {
+//   if (
+//     req.query['hub.mode'] === 'subscribe'
+//     && req.query['hub.verify_token'] === token
+//   ) {
+//     res.send(req.query['hub.challenge']);
+//     console.log(hub.challenge);
+//   } else {
+//     res.sendStatus(400);
+//   }
+// });
 
 /**
  * Error Handler.
@@ -962,6 +993,7 @@ app.use(bodyParser.json());
 
 
 // eslint-disable-next-line camelcase
+const token = process.env.FBWEBHOOKSTOKEN || 'token';
 const receivedUpdates = [];
 
 app.get('/webhooks', (req, res) => {
