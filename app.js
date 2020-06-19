@@ -21,7 +21,7 @@ const chalk = require('chalk');
 const errorHandler = require('errorhandler');
 const qs = require('querystring');
 const lusca = require('lusca');
-const dotenv = require('dotenv');
+// const dotenv = require('dotenv');
 const MongoStore = require('connect-mongo')(session);
 const flash = require('express-flash');
 const path = require('path');
@@ -31,6 +31,9 @@ const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
 const multer = require('multer');
 const axios = require('axios');
+const xhub = require('express-x-hub');
+const cron = require('node-cron');
+require('dotenv').config();
 
 
 const {
@@ -50,7 +53,7 @@ const upload = multer({ dest: path.join(__dirname, 'uploads') });
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
-dotenv.config({ path: '.env.example' });
+// dotenv.config({ path: '.env.example' });
 // load mongoose model
 // const Db = require('./models/User');
 const User = require('./models/User');
@@ -140,6 +143,15 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+
+/**
+ * FB, Instagram Webhook configuration.
+ */
+const fbAppSecret = process.env.APP_SECRET || 'secret';
+const token = process.env.TOKEN || 'TheTokenOfVerification';
+const receivedUpdates = [];
+app.use(xhub({ algorithm: 'sha1', secret: fbAppSecret }));
+
 // app.use((req, res, next) => {
 //   if (req.path === '/api/upload') {
 //     // Multer multipart/form-data handling needs to occur before the Lusca CSRF check.
@@ -336,6 +348,137 @@ app.get('/auth/google/callback',
     res.redirect(req.session.returnTo || '/');
   });
 
+/**
+ * Facebook instagram webhook endpoints
+ */
+app.get('/fbwebhook', (req, res) => {
+  console.log('FB Webhook data');
+  res.status(200).send(JSON.stringify(receivedUpdates, null, 2));
+});
+
+app.get(['/facebook', '/instagram'], (req, res) => {
+  console.log('facebook, instagram verify');
+  if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === token) {
+    res.send(req.query['hub.challenge']);
+  } else {
+    res.status(400).send();
+  }
+});
+
+app.post('/facebook', (req, res) => {
+  console.log('Facebook request body:', JSON.stringify(req.body));
+
+  if (!req.isXHubValid()) {
+    console.log('Warning - request header X-Hub-Signature not present or invalid');
+    res.status(401).send();
+    return;
+  }
+
+  console.log('request header X-Hub-Signature validated');
+  // Process the Facebook updates here
+  receivedUpdates.unshift(req.body);
+  res.status(200).send();
+});
+
+app.post('/instagram', (req, res) => {
+  console.log('Instagram request body:');
+  console.log(req.body);
+  // Process the Instagram updates here
+  receivedUpdates.unshift(req.body);
+  res.status(200).send();
+});
+
+// ----------------------YOUTUBE CRON TASK STARTS HERE ------------------------//
+
+const API_URL = 'https://www.googleapis.com/youtube/v3/channels';
+const {
+  GOOGLE_ID,
+  GOOGLE_SECRET,
+  GOOGLE_YOUTUBE_API_KEY,
+  YOUTUBE_PREV_REF_TOKEN
+} = process.env;
+const prevRefreshToken = YOUTUBE_PREV_REF_TOKEN;
+
+/**
+ * Youtube scheduler api authenticator
+ */
+const youtubeAccessTokenByRefresh = async (refreshToken) => {
+  console.log('calling token refresh', refreshToken);
+
+  const requestBody = {
+    grant_type: 'refresh_token',
+    refresh_token: refreshToken,
+    client_id: GOOGLE_ID,
+    client_secret: GOOGLE_SECRET
+  };
+
+  const url = 'https://oauth2.googleapis.com/token';
+
+  return axios.post(url, qs.stringify(requestBody))
+    .then((res) => {
+      console.log('returning token response');
+      return res.data;
+    }).catch((error) => {
+      console.error('an error occurred while trying to perform token refresh - ', error);
+    });
+};
+
+/**
+ * Youtube scheduler main function
+ */
+const getChannelInfoById = async () => {
+  console.log('task started');
+  console.log('calling fetch channel info');
+
+  const tokenResponse = await youtubeAccessTokenByRefresh(prevRefreshToken);
+  const accessToken = tokenResponse.access_token;
+
+  const auth = `Bearer ${accessToken}`;
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: auth
+  };
+
+  const url = `${API_URL}?part=id,snippet,contentDetails,statistics&mine=true&key=${GOOGLE_YOUTUBE_API_KEY}`;
+
+  return axios.get(url, {
+    headers
+  })
+    .then((res) => {
+      console.log('return youtube response ');
+      return res.data;
+    }).catch((error) => {
+      console.error('an error occurred - ', error);
+    });
+};
+
+/**
+ * saving to db, or any other cron logic goes here
+ */
+const mainCronTask = async () => {
+  console.log('task started');
+  console.log('calling fetch channel info');
+
+  const youtubeResponse = await getChannelInfoById();
+  console.log('YOUTUBE RESPONSE -', JSON.stringify(youtubeResponse));
+
+  // implement the rest of the logic as you want
+};
+
+/**
+ * Youtube scheduler
+ */
+cron.schedule('*/1 * * * *', () => {
+  console.log('running a task every 1 minutes');
+  mainCronTask()
+    .then(() => {
+      console.log('task completed');
+    }).catch((e) => {
+      console.log(`task ended with an error${JSON.stringify(e)}`);
+    });
+}, {
+  scheduled: true
+});
 
 // ________________________________________graphql starts here_________________________________
 
