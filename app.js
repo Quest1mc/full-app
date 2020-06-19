@@ -31,6 +31,7 @@ const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
 const multer = require('multer');
 const axios = require('axios');
+const xhub = require('express-x-hub');
 
 
 const {
@@ -140,6 +141,15 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+
+/**
+ * FB, Instagram Webhook configuration.
+ */
+const fbAppSecret = process.env.APP_SECRET || 'secret';
+const token = process.env.TOKEN || 'TheTokenOfVerification';
+const receivedUpdates = [];
+app.use(xhub({ algorithm: 'sha1', secret: fbAppSecret }));
+
 // app.use((req, res, next) => {
 //   if (req.path === '/api/upload') {
 //     // Multer multipart/form-data handling needs to occur before the Lusca CSRF check.
@@ -335,6 +345,46 @@ app.get('/auth/google/callback',
   (req, res) => {
     res.redirect(req.session.returnTo || '/');
   });
+
+/**
+ * Facebook instagram webhook endpoints
+ */
+app.get('/fbwebhook', (req, res) => {
+  console.log('FB Webhook data');
+  res.status(200).send(JSON.stringify(receivedUpdates, null, 2));
+});
+
+app.get(['/facebook', '/instagram'], (req, res) => {
+  console.log('facebook, instagram verify');
+  if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === token) {
+    res.send(req.query['hub.challenge']);
+  } else {
+    res.status(400).send();
+  }
+});
+
+app.post('/facebook', (req, res) => {
+  console.log('Facebook request body:', JSON.stringify(req.body));
+
+  if (!req.isXHubValid()) {
+    console.log('Warning - request header X-Hub-Signature not present or invalid');
+    res.status(401).send();
+    return;
+  }
+
+  console.log('request header X-Hub-Signature validated');
+  // Process the Facebook updates here
+  receivedUpdates.unshift(req.body);
+  res.status(200).send();
+});
+
+app.post('/instagram', (req, res) => {
+  console.log('Instagram request body:');
+  console.log(req.body);
+  // Process the Instagram updates here
+  receivedUpdates.unshift(req.body);
+  res.status(200).send();
+});
 
 
 // ________________________________________graphql starts here_________________________________
