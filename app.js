@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-undef */
 
 /* eslint-disable no-unused-vars */
@@ -69,10 +71,253 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 app.disable('x-powered-by');
 
 api(app);
+// ------------------facebook and insta webhooks starts  ---------------------------//
+/**
+ * FB, Instagram Webhook configuration.
+ */
+const fbAppSecret = process.env.APP_SECRET || 'secret';
+const token = process.env.FBWEBTOKEN || 'heythis2020june';
+const receivedUpdates = [];
+app.use(xhub({ algorithm: 'sha1', secret: fbAppSecret }));
 
+// app.use(lusca.xframe('SAMEORIGIN'));
+// app.use(lusca.xssProtection(true));
+// app.disable('x-powered-by');
+// app.use((req, res, next) => {
+//   res.locals.user = req.user;
+//   next();
+// });
+
+app.get('/auth/instagram', (req, res) => {
+  const clientId = process.env.INSTAGRAM_ID;
+  const redirectUri = process.env.INSTAGRAM_ID_URI;
+  res.redirect(
+    `https://api.instagram.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user_profile,user_media&response_type=code`,
+  );
+});
+app.get('/auth/instagram/callback', (req, res) => {
+  // console.log('this is the code', req.query.code);
+
+  const { code } = req.query;
+  const clientId = process.env.INSTAGRAM_ID;
+  const clientSecret = process.env.INSTAGRAM_SECRET;
+
+  console.log('this is the code ', code);
+  const redirectUri = process.env.INSTAGRAM_ID_URI;
+  const url = 'https://api.instagram.com/oauth/access_token';
+
+  const body = {
+    client_id: clientId,
+    client_secret: clientSecret,
+    grant_type: 'authorization_code',
+    redirect_uri: redirectUri,
+    code,
+  };
+
+  request({
+    method: 'POST',
+    uri: 'https://api.instagram.com/oauth/access_token',
+    body: qs.stringify(body),
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  }).then((response) => {
+    const accessToken = response.access_token;
+    console.log('RESPonse', response.access_token);
+    if (req.user) {
+      User.findById(req.user.id, (err, user) => {
+        if (err) {
+          return err;
+        }
+        // user.instagram = profile.id;
+        user.tokens.push({ kind: 'instagram', accessToken });
+        // user.profile.name = user.profile.name || profile.displayName;
+        // user.profile.picture = user.profile.picture || profile._json.data.profile_picture;
+        // user.profile.website = user.profile.website || profile._json.data.website;
+        user.save((err) => {
+          req.flash('info', { msg: 'Instagram account has been linked.' });
+          console.log(err, user);
+        });
+      });
+    }
+  });
+});
+// });
+
+app.get(
+  '/auth/facebook',
+  passport.authenticate('facebook', { scope: ['email', 'public_profile', 'manage_pages'] }),
+);
+app.get(
+  '/auth/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  (req, res) => {
+    res.redirect(req.session.returnTo || '/');
+  },
+);
+
+app.get(
+  '/auth/google',
+  passport.authenticate('google', {
+    scope: [
+      'profile',
+      'email',
+      'https://www.googleapis.com/auth/youtube.readonly',
+      // 'https://www.googleapis.com/auth/spreadsheets.readonly',
+    ],
+    accessType: 'offline',
+    prompt: 'consent',
+  }),
+);
+app.get(
+  '/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  (req, res) => {
+    res.redirect(req.session.returnTo || '/');
+  },
+);
+
+/**
+ * Facebook instagram webhook endpoints
+ */
+app.get('/fbwebhook', (req, res) => {
+  console.log('FB Webhook data');
+  res.status(200).send(JSON.stringify(receivedUpdates, null, 2));
+});
+
+app.get(['/facebook', '/instagram'], (req, res) => {
+  console.log('facebook, instagram verify');
+  if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === token) {
+    res.send(req.query['hub.challenge']);
+  } else {
+    res.status(400).send();
+  }
+});
+
+app.post('/facebook', (req, res) => {
+  console.log('Facebook request body:', JSON.stringify(req.body));
+
+  if (!req.isXHubValid()) {
+    console.log('Warning - request header X-Hub-Signature not present or invalid');
+    res.status(401).send();
+    return;
+  }
+
+  console.log('request header X-Hub-Signature validated');
+  // Process the Facebook updates here
+  receivedUpdates.unshift(req.body);
+  res.status(200).send();
+});
+
+app.post('/instagram', (req, res) => {
+  console.log('Instagram request body:');
+  console.log(req.body);
+  // Process the Instagram updates here
+  receivedUpdates.unshift(req.body);
+  res.status(200).send();
+});
+// ----------------------YOUTUBE CRON TASK STARTS HERE ------------------------//
+
+const API_URL = 'https://www.googleapis.com/youtube/v3/channels';
+const { GOOGLE_ID, GOOGLE_SECRET, GOOGLE_YOUTUBE_API_KEY, YOUTUBE_PREV_REF_TOKEN } = process.env;
+// const prevRefreshToken = YOUTUBE_PREV_REF_TOKEN;
+const prevRefreshToken =
+  '1//095N0H0w28vpmCgYIARAAGAkSNwF-L9Ir2HV9G4KEnpq8WGhbqvCsuTxDA6VnlUHSzJG0hGFmzSNiIysJ-P44TwMlsLLWTZU9oAE';
+
+/**
+ * Youtube scheduler api authenticator
+ */
+const youtubeAccessTokenByRefresh = async (refreshToken) => {
+  console.log('calling token refresh', refreshToken);
+
+  const requestBody = {
+    grant_type: 'refresh_token',
+    refresh_token: refreshToken,
+    client_id: GOOGLE_ID,
+    client_secret: GOOGLE_SECRET,
+  };
+
+  const url = 'https://oauth2.googleapis.com/token';
+
+  return axios
+    .post(url, qs.stringify(requestBody))
+    .then((res) => {
+      console.log('returning token response');
+      return res.data;
+    })
+    .catch((error) => {
+      console.error('an error occurred while trying to perform token refresh - ', error);
+    });
+};
+
+/**
+ * Youtube scheduler main function
+ */
+const getChannelInfoById = async () => {
+  console.log('task started');
+  console.log('calling fetch channel info');
+
+  const tokenResponse = await youtubeAccessTokenByRefresh(prevRefreshToken);
+  const accessToken = tokenResponse.access_token;
+
+  const auth = `Bearer ${accessToken}`;
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: auth,
+  };
+
+  const url = `${API_URL}?part=id,snippet,contentDetails,statistics&mine=true&key=${GOOGLE_YOUTUBE_API_KEY}`;
+
+  return axios
+    .get(url, {
+      headers,
+    })
+    .then((res) => {
+      console.log('return youtube response ');
+      return res.data;
+    })
+    .catch((error) => {
+      console.error('an error occurred - ', error);
+    });
+};
+
+/**
+ * saving to db, or any other cron logic goes here
+ */
+const mainCronTask = async () => {
+  console.log('task started');
+  console.log('calling fetch channel info');
+
+  const youtubeResponse = await getChannelInfoById();
+  console.log('YOUTUBE RESPONSE -', JSON.stringify(youtubeResponse));
+
+  // implement the rest of the logic as you want
+};
+
+/**
+ * Youtube scheduler
+ */
+cron.schedule(
+  '*/1 * * * *',
+  () => {
+    console.log('running a task every 1 minutes');
+    mainCronTask()
+      .then(() => {
+        console.log('task completed');
+      })
+      .catch((e) => {
+        console.log(`task ended with an error${JSON.stringify(e)}`);
+      });
+  },
+  {
+    scheduled: true,
+  },
+);
+// ------------------youtube cronjob ends---------------------------//
 app.use(
   '/graphql',
   ExpressGraphQL({
@@ -81,7 +326,7 @@ app.use(
   }),
 );
 
-app.listen(3128);
+// app.listen(3128);
 // ----------------------Express cronjob ends ------------------------//
 
 /**
