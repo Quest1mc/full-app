@@ -227,9 +227,8 @@ app.post('/instagram', (req, res) => {
 
 const API_URL = 'https://www.googleapis.com/youtube/v3/channels';
 const { GOOGLE_ID, GOOGLE_SECRET, GOOGLE_YOUTUBE_API_KEY, YOUTUBE_PREV_REF_TOKEN } = process.env;
-// const prevRefreshToken = YOUTUBE_PREV_REF_TOKEN;
 const prevRefreshToken =
-  '1//095N0H0w28vpmCgYIARAAGAkSNwF-L9Ir2HV9G4KEnpq8WGhbqvCsuTxDA6VnlUHSzJG0hGFmzSNiIysJ-P44TwMlsLLWTZU9oAE';
+  '1//093wgNDuyTYPvCgYIARAAGAkSNwF-L9IryoCYOqE-1lXY34aTPSN5BIqRhAx_meSr0sElKKVVqjBxQu2GoYy9zCNwbgz1YE5OJXM';
 
 /**
  * Youtube scheduler api authenticator
@@ -321,13 +320,6 @@ cron.schedule(
   },
 );
 // ------------------youtube cronjob ends---------------------------//
-app.use(
-  '/graphql',
-  ExpressGraphQL({
-    schema,
-    graphiql: true,
-  }),
-);
 
 // app.listen(3128);
 // ----------------------Express cronjob ends ------------------------//
@@ -337,13 +329,20 @@ app.use(
  */
 if (process.env.NODE_ENV === 'development') {
   // only use in development
-  // app.use(errorHandler());
+  app.use(errorHandler());
 } else {
   app.use((err, req, res, next) => {
     console.error(err);
     res.status(500).send('Server Error');
   });
 }
+app.use(
+  '/graphql',
+  ExpressGraphQL({
+    schema,
+    graphiql: true,
+  }),
+);
 
 (async function start() {
   // We get Nuxt instance
@@ -369,6 +368,8 @@ if (process.env.NODE_ENV === 'development') {
     );
     console.log('  Press CTRL-C to stop\n');
   });
+  app.use(xhub({ algorithm: 'sha1', secret: process.env.APP_SECRET }));
+  app.use(bodyParser.json());
 })();
 
 module.exports = app;
