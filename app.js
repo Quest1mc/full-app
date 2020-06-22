@@ -20,6 +20,9 @@ const chalk = require('chalk');
 const dotenv = require('dotenv');
 const MongoStore = require('connect-mongo')(session);
 const mongoose = require('mongoose');
+const User = require('./config/mongoose/models/User');
+const axios = require('axios');
+const qs = require('qs');
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -226,9 +229,7 @@ app.post('/instagram', (req, res) => {
 // ----------------------YOUTUBE CRON TASK STARTS HERE ------------------------//
 
 const API_URL = 'https://www.googleapis.com/youtube/v3/channels';
-const { GOOGLE_ID, GOOGLE_SECRET, GOOGLE_YOUTUBE_API_KEY, YOUTUBE_PREV_REF_TOKEN } = process.env;
-const prevRefreshToken =
-  '1//093wgNDuyTYPvCgYIARAAGAkSNwF-L9IryoCYOqE-1lXY34aTPSN5BIqRhAx_meSr0sElKKVVqjBxQu2GoYy9zCNwbgz1YE5OJXM';
+const { GOOGLE_ID, GOOGLE_SECRET, GOOGLE_YOUTUBE_API_KEY } = process.env;
 
 /**
  * Youtube scheduler api authenticator
@@ -259,11 +260,12 @@ const youtubeAccessTokenByRefresh = async (refreshToken) => {
 /**
  * Youtube scheduler main function
  */
-const getChannelInfoById = async () => {
+const getChannelInfoById = async (refreshToken) => {
   console.log('task started');
   console.log('calling fetch channel info');
 
-  const tokenResponse = await youtubeAccessTokenByRefresh(prevRefreshToken);
+  // pass refresh token and receive access token to call youtube api
+  const tokenResponse = await youtubeAccessTokenByRefresh(refreshToken);
   const accessToken = tokenResponse.access_token;
 
   const auth = `Bearer ${accessToken}`;
@@ -294,10 +296,25 @@ const mainCronTask = async () => {
   console.log('task started');
   console.log('calling fetch channel info');
 
-  const youtubeResponse = await getChannelInfoById();
-  console.log('YOUTUBE RESPONSE -', JSON.stringify(youtubeResponse));
+  // read latest user document from mongodb
+  User.find()
+    .sort({ _id: -1 })
+    .limit(1)
+    .exec(async (err, users) => {
+      // find token object from latest user document
+      const token = users[0].tokens.find((item) => item.kind === 'google');
 
-  // implement the rest of the logic as you want
+      // if google token is available continue with the rest
+      if (token) {
+        // pass resfresh token to method getChannelInfoById
+        const youtubeResponse = await getChannelInfoById(token.refreshToken);
+        console.log('YOUTUBE RESPONSE -', JSON.stringify(youtubeResponse));
+
+        // implement the rest of the logic as you want
+      } else {
+        console.error('no youtube refresh token found');
+      }
+    });
 };
 
 /**
@@ -312,7 +329,7 @@ cron.schedule(
         console.log('task completed');
       })
       .catch((e) => {
-        console.log(`task ended with an error${JSON.stringify(e)}`);
+        console.log(`task ended with an error ${e}`);
       });
   },
   {
@@ -344,32 +361,45 @@ app.use(
   }),
 );
 
-(async function start() {
-  // We get Nuxt instance
-  const nuxt = await loadNuxt(app.get('env') === 'development' ? 'dev' : 'start');
+/**
+ * Start Express server.
+ */
+app.listen(app.get('port'), () => {
+  console.log(
+    '%s App is running at http://localhost:%d in %s mode',
+    chalk.green('✓'),
+    app.get('port'),
+    app.get('env'),
+  );
+  console.log('  Press CTRL-C to stop\n');
+});
 
-  // Render every route with Nuxt.js
-  app.use(nuxt.render);
-
-  // Build only in dev mode with hot-reloading
-  if (app.get('env') === 'development') {
-    build(nuxt);
-  }
-  // Listen the server
-  /**
-   * Start Express server.
-   */
-  app.listen(app.get('port'), () => {
-    console.log(
-      '%s App is running at http://localhost:%d in %s mode',
-      chalk.green('✓'),
-      app.get('port'),
-      app.get('env'),
-    );
-    console.log('  Press CTRL-C to stop\n');
-  });
-  app.use(xhub({ algorithm: 'sha1', secret: process.env.APP_SECRET }));
-  app.use(bodyParser.json());
-})();
+// (async function start() {
+//   // We get Nuxt instance
+//   const nuxt = await loadNuxt(app.get('env') === 'development' ? 'dev' : 'start');
+//
+//   // Render every route with Nuxt.js
+//   app.use(nuxt.render);
+//
+//   // Build only in dev mode with hot-reloading
+//   if (app.get('env') === 'development') {
+//     build(nuxt);
+//   }
+//   // Listen the server
+//   /**
+//    * Start Express server.
+//    */
+//   app.listen(app.get('port'), () => {
+//     console.log(
+//       '%s App is running at http://localhost:%d in %s mode',
+//       chalk.green('✓'),
+//       app.get('port'),
+//       app.get('env'),
+//     );
+//     console.log('  Press CTRL-C to stop\n');
+//   });
+//   app.use(xhub({ algorithm: 'sha1', secret: process.env.APP_SECRET }));
+//   app.use(bodyParser.json());
+// })();
 
 module.exports = app;
