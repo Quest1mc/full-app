@@ -321,7 +321,7 @@ const mainCronTask = async () => {
  * Youtube scheduler
  */
 cron.schedule(
-  '*/1 * * * *',
+  '*/59 23 * * *',
   () => {
     console.log('running a task every 1 minutes');
     mainCronTask()
@@ -364,42 +364,42 @@ app.use(
 /**
  * Start Express server.
  */
-app.listen(app.get('port'), () => {
-  console.log(
-    '%s App is running at http://localhost:%d in %s mode',
-    chalk.green('✓'),
-    app.get('port'),
-    app.get('env'),
-  );
-  console.log('  Press CTRL-C to stop\n');
-});
+// app.listen(app.get('port'), () => {
+//   console.log(
+//     '%s App is running at http://localhost:%d in %s mode',
+//     chalk.green('✓'),
+//     app.get('port'),
+//     app.get('env'),
+//   );
+//   console.log('  Press CTRL-C to stop\n');
+// });
 
-// (async function start() {
-//   // We get Nuxt instance
-//   const nuxt = await loadNuxt(app.get('env') === 'development' ? 'dev' : 'start');
-//
-//   // Render every route with Nuxt.js
-//   app.use(nuxt.render);
-//
-//   // Build only in dev mode with hot-reloading
-//   if (app.get('env') === 'development') {
-//     build(nuxt);
-//   }
-//   // Listen the server
-//   /**
-//    * Start Express server.
-//    */
-//   app.listen(app.get('port'), () => {
-//     console.log(
-//       '%s App is running at http://localhost:%d in %s mode',
-//       chalk.green('✓'),
-//       app.get('port'),
-//       app.get('env'),
-//     );
-//     console.log('  Press CTRL-C to stop\n');
-//   });
-//   app.use(xhub({ algorithm: 'sha1', secret: process.env.APP_SECRET }));
-//   app.use(bodyParser.json());
-// })();
+(async function start() {
+  // We get Nuxt instance
+  const nuxt = await loadNuxt(app.get('env') === 'development' ? 'dev' : 'start');
+
+  // Render every route with Nuxt.js
+  app.use(nuxt.render);
+
+  // Build only in dev mode with hot-reloading
+  if (app.get('env') === 'development') {
+    build(nuxt);
+  }
+  // Listen the server
+  /**
+   * Start Express server.
+   */
+  app.listen(app.get('port'), () => {
+    console.log(
+      '%s App is running at http://localhost:%d in %s mode',
+      chalk.green('✓'),
+      app.get('port'),
+      app.get('env'),
+    );
+    console.log('  Press CTRL-C to stop\n');
+  });
+  app.use(xhub({ algorithm: 'sha1', secret: process.env.APP_SECRET }));
+  app.use(bodyParser.json());
+})();
 
 module.exports = app;
