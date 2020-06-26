@@ -9,14 +9,16 @@
  */
 const { loadNuxt, build } = require('nuxt');
 const express = require('express');
-const methodOverride = require('method-override');
+
 const xhub = require('express-x-hub');
+const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
 const ExpressGraphQL = require('express-graphql');
 const compression = require('compression');
 const session = require('express-session');
 const flash = require('express-flash');
 const cron = require('node-cron');
-const bodyParser = require('body-parser');
+
 const chalk = require('chalk');
 const dotenv = require('dotenv');
 const MongoStore = require('connect-mongo')(session);
@@ -60,9 +62,12 @@ mongoose.connection.on('error', (err) => {
  */
 app.set('host', process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0');
 app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080);
+app.use(xhub({ algorithm: 'sha1', secret: process.env.FACEBOOK_SECRET }));
+
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride());
 app.use(
   session({
     resave: false,
@@ -223,8 +228,10 @@ app.post('/facebook', (req, res) => {
 });
 
 app.post('/instagram', (req, res) => {
-  console.log('Instagram request body:');
-  console.log(req.body);
+  // console.log('Instagram request body:');
+  // console.log(req.body);
+  console.log('Instagram request body:', JSON.stringify(req.body));
+  // console.log('This is the response', JSON.stringify(req.body.entry[0].changes));
   // Process the Instagram updates here
   receivedUpdates.unshift(req.body);
   console.log(receivedUpdates);
@@ -402,9 +409,9 @@ app.use(
     );
     console.log('  Press CTRL-C to stop\n');
   });
-  app.use(xhub({ algorithm: 'sha1', secret: process.env.APP_SECRET }));
-  app.use(bodyParser.json());
-  app.use(methodOverride());
+  // app.use(xhub({ algorithm: 'sha1', secret: process.env.APP_SECRET }));
+  // app.use(bodyParser.json());
+  // app.use(methodOverride());
 })();
 
 module.exports = app;
