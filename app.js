@@ -65,9 +65,7 @@ app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080);
 app.use(xhub({ algorithm: 'sha1', secret: process.env.FACEBOOK_SECRET }));
 
 app.use(compression());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(methodOverride());
+
 app.use(
   session({
     resave: false,
@@ -91,10 +89,13 @@ api(app);
 /**
  * FB, Instagram Webhook configuration.
  */
-const fbAppSecret = process.env.APP_SECRET || 'secret';
+const fbAppSecret = process.env.FACEBOOK_SECRET || 'secret';
 const token = process.env.FBWEBTOKEN || 'heythis2020june';
 const receivedUpdates = [];
 app.use(xhub({ algorithm: 'sha1', secret: fbAppSecret }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride());
 
 // app.use(lusca.xframe('SAMEORIGIN'));
 // app.use(lusca.xssProtection(true));
@@ -212,7 +213,7 @@ app.get(['/facebook', '/instagram'], (req, res) => {
 
 app.post('/facebook', (req, res) => {
   console.log('Facebook request body:', JSON.stringify(req.body));
-  console.log('This is the response', JSON.stringify(req.body.entry[0].changes));
+  // console.log('This is the response', JSON.stringify(req.body.entry[0].changes));
   if (!req.isXHubValid()) {
     console.log('Warning - request header X-Hub-Signature not present or invalid');
     res.status(401).send();
@@ -231,8 +232,13 @@ app.post('/instagram', (req, res) => {
   // console.log('Instagram request body:');
   // console.log(req.body);
   console.log('Instagram request body:', JSON.stringify(req.body));
-  // console.log('This is the response', JSON.stringify(req.body.entry[0].changes));
   // Process the Instagram updates here
+  if (!req.isXHubValid()) {
+    console.log('Warning - request header X-Hub-Signature not present or invalid');
+    res.status(401).send();
+    return;
+  }
+  console.log('request header X-Hub-Signature validated');
   receivedUpdates.unshift(req.body);
   console.log(receivedUpdates);
   res.status(200).send();
