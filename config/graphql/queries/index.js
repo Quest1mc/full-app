@@ -157,10 +157,15 @@ module.exports = new GraphQLObjectType({
           const user = await User.findById(args.id);
 
           const { accessToken } = user.tokens.find((item) => item.kind === 'instagram');
+          // const instagramUserId = user.instagramContents[0].id;
           // console.log(accessToken);
           const fieldsToGet = 'id,account_type,media_count,username,media';
+          // const fieldsToGet2 =
+          //   'caption,children,comments_count,id,like_count, media_type, media_url, permalink, timestamp';
 
           const getAccountContents = `https://graph.instagram.com/me?fields=${fieldsToGet}&access_token=${accessToken}`;
+          // const getAccountContents2 = `https://graph.instagram.com/recent_media?user_id${instagramUserId}&fields=${fieldsToGet}&access_token=${accessToken}`;
+
           //         `https://graph.instagram.com/{media-id}?fields=${fieldsToGet}&access_token=${access_token}`;
           // `https://graph.instagram.com/me/media?fields=${fieldsToGet}&access_token=${access_token}`
 

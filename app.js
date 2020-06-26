@@ -9,12 +9,13 @@
  */
 const { loadNuxt, build } = require('nuxt');
 const express = require('express');
+const methodOverride = require('method-override');
+const xhub = require('express-x-hub');
 const ExpressGraphQL = require('express-graphql');
 const compression = require('compression');
 const session = require('express-session');
 const flash = require('express-flash');
 const cron = require('node-cron');
-const xhub = require('express-x-hub');
 const bodyParser = require('body-parser');
 const chalk = require('chalk');
 const dotenv = require('dotenv');
@@ -206,7 +207,7 @@ app.get(['/facebook', '/instagram'], (req, res) => {
 
 app.post('/facebook', (req, res) => {
   console.log('Facebook request body:', JSON.stringify(req.body));
-
+  console.log('This is the response', JSON.stringify(req.body.entry[0].changes));
   if (!req.isXHubValid()) {
     console.log('Warning - request header X-Hub-Signature not present or invalid');
     res.status(401).send();
@@ -216,6 +217,8 @@ app.post('/facebook', (req, res) => {
   console.log('request header X-Hub-Signature validated');
   // Process the Facebook updates here
   receivedUpdates.unshift(req.body);
+  // console.log(req.body);
+  // console.log(res);
   res.status(200).send();
 });
 
@@ -224,6 +227,7 @@ app.post('/instagram', (req, res) => {
   console.log(req.body);
   // Process the Instagram updates here
   receivedUpdates.unshift(req.body);
+  console.log(receivedUpdates);
   res.status(200).send();
 });
 // ----------------------YOUTUBE CRON TASK STARTS HERE ------------------------//
@@ -400,6 +404,7 @@ app.use(
   });
   app.use(xhub({ algorithm: 'sha1', secret: process.env.APP_SECRET }));
   app.use(bodyParser.json());
+  app.use(methodOverride());
 })();
 
 module.exports = app;
