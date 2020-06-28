@@ -238,7 +238,6 @@ app.post('/instagram', (req, res) => {
     res.status(401).send();
     return;
   }
-  console.log('request header X-Hub-Signature validated');
   receivedUpdates.unshift(req.body);
   console.log(receivedUpdates);
   res.status(200).send();
